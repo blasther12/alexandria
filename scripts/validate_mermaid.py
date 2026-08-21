@@ -3,16 +3,43 @@
 
 from __future__ import annotations
 
-import re
 import shutil
 import subprocess
 import sys
 import tempfile
 from pathlib import Path
 
+try:
+    from .markdown_fences import Fence, closes_fence, opening_fence
+except ImportError:  # Direct execution: python3 scripts/validate_mermaid.py
+    from markdown_fences import Fence, closes_fence, opening_fence
+
 
 ROOT = Path(__file__).resolve().parents[1]
-BLOCK_RE = re.compile(r"^```mermaid\s*$\n(.*?)^```\s*$", re.MULTILINE | re.DOTALL)
+
+
+def mermaid_blocks(text: str) -> list[tuple[int, str]]:
+    """Return line/body pairs for complete Mermaid fenced blocks."""
+    blocks: list[tuple[int, str]] = []
+    active_fence: Fence | None = None
+    language = ""
+    start_line = 0
+    body: list[str] = []
+    for line_number, line in enumerate(text.splitlines(), start=1):
+        if active_fence:
+            if closes_fence(line, active_fence):
+                if language == "mermaid":
+                    blocks.append((start_line, "\n".join(body) + "\n"))
+                active_fence = None
+            else:
+                body.append(line)
+            continue
+        active_fence = opening_fence(line)
+        if active_fence:
+            language = active_fence.info.split(maxsplit=1)[0].lower() if active_fence.info else ""
+            start_line = line_number
+            body = []
+    return blocks
 
 
 def main() -> int:
@@ -29,11 +56,11 @@ def main() -> int:
             if any(part in {".git", "node_modules"} for part in document.relative_to(ROOT).parts):
                 continue
             text = document.read_text(encoding="utf-8")
-            for index, match in enumerate(BLOCK_RE.finditer(text), start=1):
+            for index, (line, body) in enumerate(mermaid_blocks(text), start=1):
                 count += 1
                 source = temp / f"diagram-{count}.mmd"
                 output = temp / f"diagram-{count}.svg"
-                source.write_text(match.group(1), encoding="utf-8")
+                source.write_text(body, encoding="utf-8")
                 result = subprocess.run(
                     [executable, "--quiet", "-i", str(source), "-o", str(output)],
                     capture_output=True,
@@ -41,7 +68,6 @@ def main() -> int:
                     check=False,
                 )
                 if result.returncode:
-                    line = text.count("\n", 0, match.start()) + 1
                     output_lines = [
                         item.strip()
                         for item in (result.stderr or result.stdout).splitlines()

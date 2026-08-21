@@ -2,60 +2,115 @@ name: Documentation quality
 
 on:
   pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
+  merge_group:
+    branches:
+      - main
   push:
     branches:
       - main
+  schedule:
+    - cron: "17 6 * * 1"
   workflow_dispatch:
 
 permissions:
   contents: read
 
+concurrency:
+  group: docs-${{ github.workflow }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  markdown:
-    name: Markdown and internal links
-    runs-on: ubuntu-latest
+  workflow-lint:
+    name: GitHub Actions workflows
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Lint workflow files
+        # actionlint v1.7.12, pinned by image digest.
+        uses: docker://rhysd/actionlint@sha256:b1934ee5f1c509618f2508e6eb47ee0d3520686341fec936f3b79331f9315667
+        with:
+          args: -color
+
+  markdown:
+    name: Markdown and internal links
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97  # v7.0.0
         with:
           python-version: "3.13"
+
+      - name: Compile documentation validators
+        run: >-
+          python3 -m py_compile
+          scripts/markdown_fences.py
+          scripts/validate_docs.py
+          scripts/validate_mermaid.py
+          scripts/validate_release.py
+
+      - name: Validate release metadata
+        run: python3 scripts/validate_release.py
 
       - name: Validate structure and relative links
         run: python3 scripts/validate_docs.py --require-navigation
 
       - name: Lint Markdown
-        uses: DavidAnson/markdownlint-cli2-action@v24
+        uses: DavidAnson/markdownlint-cli2-action@21c1be1b93ad9ed58fa840aacc3f279cde2a72ff  # v24.2.0
         with:
           globs: "**/*.md"
 
   external-links:
     name: External links
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Check links with lychee
-        uses: lycheeverse/lychee-action@v2
+        uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8  # v2.9.0
         with:
           args: --config .lychee.toml --no-progress "./**/*.md"
           fail: true
+          failIfEmpty: true
           jobSummary: true
+          lycheeVersion: v0.24.2
 
   mermaid:
     name: Mermaid diagrams
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Set up Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020  # v7.0.0
         with:
           node-version: "24"
+          package-manager-cache: false
 
       - name: Install Mermaid CLI
         run: npm install --global @mermaid-js/mermaid-cli@11.16.0

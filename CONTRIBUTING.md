@@ -89,15 +89,47 @@ falhas e critério de conclusão.
 Use commits semânticos, por exemplo:
 
 ```text
-docs: add postgres transaction isolation exercises
-docs: clarify kafka delivery semantics
+feat(postgresql): add transaction isolation exercises
+fix(kafka): clarify delivery semantics
 ci: validate relative documentation links
 ```
+
+## Versionamento e releases
+
+Alexandria usa Semantic Versioning e Release Please. O tipo do commit comunica
+o impacto sobre o produto educacional:
+
+- `feat(área):` adiciona uma capacidade, trilha, capítulo ou projeto e propõe
+  incremento minor;
+- `fix(área):` corrige um fato, link, exemplo ou comportamento e propõe patch;
+- `docs(área):` registra mudanças editoriais publicáveis e propõe patch;
+- `perf:`, `refactor:` e `revert:` registram mudanças publicáveis e propõem
+  patch quando não houver impacto maior;
+- `tipo!:` ou o footer `BREAKING CHANGE:` indica mudança incompatível em URLs,
+  estrutura ou contrato editorial e propõe major;
+- `ci:` e `chore:` ficam ocultos do changelog e, isoladamente, não abrem uma
+  versão.
+
+Durante o bootstrap, a primeira PR de release propõe `v1.0.0`; os incrementos
+acima passam a ser calculados sobre essa versão nas releases seguintes.
+
+Após `main` passar por toda a validação, a automação abre ou atualiza uma pull
+request de release em modo draft. Quando o conteúdo estiver pronto, um
+mantenedor marca a PR como pronta, revisa os checks e faz o merge; a execução
+seguinte cria a tag `vMAJOR.MINOR.PATCH` e a GitHub Release. A própria PR de
+release já contém as atualizações de [`CHANGELOG.md`](CHANGELOG.md),
+`version.txt` e do manifesto.
+
+O workflow usa `GITHUB_TOKEN` por padrão. Defina o secret opcional
+`RELEASE_PLEASE_TOKEN` apenas se a política do repositório exigir que atualizações
+automáticas da PR de release executem checks sem aprovação manual. A configuração
+do GitHub também precisa permitir que Actions criem pull requests.
 
 ## Validação local
 
 ```bash
 python3 scripts/validate_docs.py --require-navigation
+python3 scripts/validate_release.py
 python3 scripts/validate_mermaid.py
 npx --yes markdownlint-cli2 "**/*.md" "#node_modules"
 # A CI também verifica URLs externas com lychee.

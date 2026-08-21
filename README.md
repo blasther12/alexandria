@@ -147,7 +147,8 @@ específicas.
 Alexandria nasce com a arquitetura completa e Codices iniciais profundos. O
 [Roadmap](ROADMAP.md) explicita o que está consolidado, em expansão ou planejado.
 Uma página curta pode ser um índice intencional; nunca deve fingir ser um guia
-completo.
+completo. Versões publicadas e mudanças compatíveis estão registradas no
+[Changelog](CHANGELOG.md).
 
 ## Contribuindo
 

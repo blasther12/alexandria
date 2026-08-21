@@ -12,12 +12,16 @@ from collections import Counter
 from pathlib import Path
 from urllib.parse import unquote
 
+try:
+    from .markdown_fences import Fence, closes_fence, opening_fence
+except ImportError:  # Direct execution: python3 scripts/validate_docs.py
+    from markdown_fences import Fence, closes_fence, opening_fence
+
 
 ROOT = Path(__file__).resolve().parents[1]
 IGNORED_PARTS = {".git", "node_modules"}
 LINK_RE = re.compile(r"!?\[[^\]]*\]\(([^)]+)\)")
 HEADING_RE = re.compile(r"^(#{1,6})\s+(.+?)\s*#*\s*$")
-FENCE_RE = re.compile(r"^\s*(`{3,}|~{3,})([^`]*)$")
 MERMAID_TYPES = (
     "flowchart",
     "graph",
@@ -57,18 +61,14 @@ def github_slug(value: str) -> str:
 def anchors_for(path: Path) -> set[str]:
     counts: Counter[str] = Counter()
     anchors: set[str] = set()
-    in_fence = False
-    fence_char = ""
+    active_fence: Fence | None = None
     for line in path.read_text(encoding="utf-8").splitlines():
-        match = FENCE_RE.match(line)
-        if match:
-            marker = match.group(1)[0]
-            if not in_fence:
-                in_fence, fence_char = True, marker
-            elif marker == fence_char:
-                in_fence = False
+        if active_fence:
+            if closes_fence(line, active_fence):
+                active_fence = None
             continue
-        if in_fence:
+        active_fence = opening_fence(line)
+        if active_fence:
             continue
         heading = HEADING_RE.match(line)
         if not heading:
@@ -93,18 +93,14 @@ def normalize_link(raw: str) -> str:
 def validate_links(path: Path, anchor_cache: dict[Path, set[str]]) -> list[str]:
     errors: list[str] = []
     text = path.read_text(encoding="utf-8")
-    in_fence = False
-    fence_char = ""
+    active_fence: Fence | None = None
     for line_number, line in enumerate(text.splitlines(), start=1):
-        fence = FENCE_RE.match(line)
-        if fence:
-            marker = fence.group(1)[0]
-            if not in_fence:
-                in_fence, fence_char = True, marker
-            elif marker == fence_char:
-                in_fence = False
+        if active_fence:
+            if closes_fence(line, active_fence):
+                active_fence = None
             continue
-        if in_fence:
+        active_fence = opening_fence(line)
+        if active_fence:
             continue
         without_inline_code = re.sub(r"(`+).*?\1", "", line)
         for raw in LINK_RE.findall(without_inline_code):
@@ -150,23 +146,14 @@ def validate_document(path: Path) -> tuple[list[str], int]:
     if text and not text.endswith("\n"):
         errors.append(f"{relative}: arquivo deve terminar com newline")
 
-    in_fence = False
-    fence_char = ""
+    active_fence: Fence | None = None
     fence_start = 0
     language = ""
     block: list[str] = []
     mermaid_count = 0
     for line_number, line in enumerate(text.splitlines(), start=1):
-        match = FENCE_RE.match(line)
-        if match:
-            marker = match.group(1)[0]
-            if not in_fence:
-                in_fence = True
-                fence_char = marker
-                fence_start = line_number
-                language = match.group(2).strip().split(maxsplit=1)[0].lower()
-                block = []
-            elif marker == fence_char:
+        if active_fence:
+            if closes_fence(line, active_fence):
                 if language == "mermaid":
                     mermaid_count += 1
                     first = next((item.strip() for item in block if item.strip()), "")
@@ -174,14 +161,18 @@ def validate_document(path: Path) -> tuple[list[str], int]:
                         errors.append(
                             f"{relative}:{fence_start}: diagrama Mermaid vazio ou tipo desconhecido"
                         )
-                in_fence = False
-                fence_char = ""
+                active_fence = None
+            else:
+                block.append(line)
             continue
-        if in_fence:
-            block.append(line)
+        active_fence = opening_fence(line)
+        if active_fence:
+            fence_start = line_number
+            language = active_fence.info.split(maxsplit=1)[0].lower() if active_fence.info else ""
+            block = []
         elif line.endswith(" ") and not line.endswith("  "):
             errors.append(f"{relative}:{line_number}: whitespace final isolado")
-    if in_fence:
+    if active_fence:
         errors.append(f"{relative}:{fence_start}: fence sem fechamento")
     return errors, mermaid_count
 

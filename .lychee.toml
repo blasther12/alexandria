@@ -1,0 +1,18 @@
+accept = [200, 203, 206, 429]
+cache = true
+max_cache_age = "2d"
+max_concurrency = 8
+max_retries = 3
+timeout = 30
+exclude = [
+  '^http://localhost',
+  '^https://localhost',
+  '^mailto:',
+  '^tel:',
+  # Fontes oficiais verificadas, mas que bloqueiam clientes automatizados.
+  '^https://www\.oreilly\.com/',
+  '^https://dl\.acm\.org/',
+  '^https://doi\.org/10\.1145/',
+  '^https://dev\.mysql\.com/',
+  '^https://waldo\.scholars\.harvard\.edu/',
+]

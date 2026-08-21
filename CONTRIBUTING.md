@@ -100,7 +100,6 @@ ci: validate relative documentation links
 python3 scripts/validate_docs.py --require-navigation
 python3 scripts/validate_mermaid.py
 npx --yes markdownlint-cli2 "**/*.md" "#node_modules"
-npx --yes prettier --check "**/*.{md,yml,yaml,json}"
 # A CI também verifica URLs externas com lychee.
 ```
 

@@ -1,0 +1,64 @@
+name: Documentation quality
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  markdown:
+    name: Markdown and internal links
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+
+      - name: Validate structure and relative links
+        run: python3 scripts/validate_docs.py --require-navigation
+
+      - name: Lint Markdown
+        uses: DavidAnson/markdownlint-cli2-action@v24
+        with:
+          globs: "**/*.md"
+
+  external-links:
+    name: External links
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Check links with lychee
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: --config .lychee.toml --no-progress "./**/*.md"
+          fail: true
+          jobSummary: true
+
+  mermaid:
+    name: Mermaid diagrams
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+
+      - name: Install Mermaid CLI
+        run: npm install --global @mermaid-js/mermaid-cli@11.16.0
+
+      - name: Render every diagram
+        run: python3 scripts/validate_mermaid.py

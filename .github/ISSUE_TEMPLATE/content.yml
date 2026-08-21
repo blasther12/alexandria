@@ -1,0 +1,35 @@
+name: Propor ou melhorar conteúdo
+description: Sugira um Codex, exercício, projeto ou correção factual.
+title: "docs: "
+labels:
+  - content
+body:
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Tipo
+      options:
+        - Correção factual
+        - Novo assunto
+        - Aprofundamento
+        - Exercício ou projeto
+        - Referência
+    validations:
+      required: true
+  - type: textarea
+    id: gap
+    attributes:
+      label: Lacuna de aprendizagem
+      description: Que capacidade está ausente ou incorreta?
+    validations:
+      required: true
+  - type: textarea
+    id: sources
+    attributes:
+      label: Fontes primárias
+      description: Inclua documentação oficial, standard, paper ou editor.
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Resultado verificável
+      description: O que o leitor deverá conseguir demonstrar?

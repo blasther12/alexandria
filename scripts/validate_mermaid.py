@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import os
 import shutil
 import subprocess
 import sys
@@ -42,6 +43,50 @@ def mermaid_blocks(text: str) -> list[tuple[int, str]]:
     return blocks
 
 
+def render_command(executable: str, source: Path, output: Path) -> list[str]:
+    """Build the mmdc command, optionally using an explicit Puppeteer config."""
+    command = [executable, "--quiet"]
+    puppeteer_config = os.environ.get("MERMAID_PUPPETEER_CONFIG")
+    if puppeteer_config:
+        command.extend(["--puppeteerConfigFile", puppeteer_config])
+    command.extend(["-i", str(source), "-o", str(output)])
+    return command
+
+
+def render_failure_detail(result: subprocess.CompletedProcess[str]) -> str:
+    """Return a useful rendering error without dumping noisy browser logs."""
+    output_lines = [
+        item.strip()
+        for item in (result.stderr or result.stdout).splitlines()
+        if item.strip()
+    ]
+    parse_error = next(
+        (
+            item
+            for item in output_lines
+            if "parse error" in item.lower()
+            or "lexical error" in item.lower()
+        ),
+        None,
+    )
+    if parse_error:
+        return parse_error
+
+    error_line = next(
+        (item for item in output_lines if item.lower().startswith("error:")),
+        None,
+    )
+    if error_line:
+        # Browser launch failures often put the actionable Chromium message on a
+        # nearby line. Keep a small tail so CI does not collapse the root cause
+        # into the generic "Failed to launch" message again.
+        index = output_lines.index(error_line)
+        context = output_lines[index : index + 5]
+        return " | ".join(context)
+
+    return output_lines[-1] if output_lines else "erro de renderização"
+
+
 def main() -> int:
     executable = shutil.which("mmdc")
     if not executable:
@@ -62,30 +107,15 @@ def main() -> int:
                 output = temp / f"diagram-{count}.svg"
                 source.write_text(body, encoding="utf-8")
                 result = subprocess.run(
-                    [executable, "--quiet", "-i", str(source), "-o", str(output)],
+                    render_command(executable, source, output),
                     capture_output=True,
                     text=True,
                     check=False,
                 )
                 if result.returncode:
-                    output_lines = [
-                        item.strip()
-                        for item in (result.stderr or result.stdout).splitlines()
-                        if item.strip()
-                    ]
-                    detail = next(
-                        (
-                            item
-                            for item in output_lines
-                            if "parse error" in item.lower()
-                            or "lexical error" in item.lower()
-                            or item.lower().startswith("error:")
-                        ),
-                        output_lines[-1] if output_lines else "erro de renderização",
-                    )
                     failures.append(
                         f"{document.relative_to(ROOT)}:{line} bloco {index}: "
-                        f"{detail}"
+                        f"{render_failure_detail(result)}"
                     )
 
     if failures:

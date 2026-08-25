@@ -10,10 +10,16 @@ exclude = [
   '^https://localhost',
   '^mailto:',
   '^tel:',
-  # Fontes oficiais verificadas, mas que bloqueiam clientes automatizados.
+  # Fontes oficiais verificadas, mas que bloqueiam ou limitam clientes automatizados.
   '^https://www\.oreilly\.com/',
   '^https://dl\.acm\.org/',
   '^https://doi\.org/10\.1145/',
   '^https://dev\.mysql\.com/',
   '^https://waldo\.scholars\.harvard\.edu/',
+  '^https://www\.iso\.org/',
+  '^https://mitpress\.mit\.edu/9780262046305/',
+  # Referência oficial estável, mas com timeout intermitente no runner.
+  '^https://man7\.org/linux/man-pages/man7/namespaces\.7\.html$',
+  # Endpoint oficial que pode falhar de forma intermitente nos runners do GitHub.
+  '^https://slsa\.dev/?$',
 ]

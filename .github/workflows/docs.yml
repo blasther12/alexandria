@@ -113,7 +113,35 @@ jobs:
           package-manager-cache: false
 
       - name: Install Mermaid CLI
-        run: npm install --global @mermaid-js/mermaid-cli@11.16.0
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: "true"
+        run: npm install --global @mermaid-js/mermaid-cli@11.16.0 puppeteer@25.8.0
+
+      - name: Configure runner Chrome
+        shell: bash
+        run: |
+          set -euo pipefail
+          chrome="$(command -v google-chrome || command -v google-chrome-stable || command -v chromium)"
+          test -n "$chrome"
+          "$chrome" --version
+          config="$RUNNER_TEMP/mermaid-puppeteer.json"
+          jq -n \
+            --arg executablePath "$chrome" \
+            '{executablePath: $executablePath, args: ["--disable-dev-shm-usage"]}' \
+            > "$config"
+          echo "MERMAID_PUPPETEER_CONFIG=$config" >> "$GITHUB_ENV"
+
+      - name: Smoke test Mermaid browser
+        shell: bash
+        run: |
+          set -euo pipefail
+          printf 'flowchart LR\n  A --> B\n' > "$RUNNER_TEMP/mermaid-smoke.mmd"
+          mmdc \
+            --quiet \
+            --puppeteerConfigFile "$MERMAID_PUPPETEER_CONFIG" \
+            -i "$RUNNER_TEMP/mermaid-smoke.mmd" \
+            -o "$RUNNER_TEMP/mermaid-smoke.svg"
+          test -s "$RUNNER_TEMP/mermaid-smoke.svg"
 
       - name: Render every diagram
         run: python3 scripts/validate_mermaid.py

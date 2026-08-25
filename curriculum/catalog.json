@@ -1,0 +1,1190 @@
+{
+  "version": 1,
+  "levels": {
+    "beginner": {
+      "label": "Beginner",
+      "order": 1,
+      "min_words": 650,
+      "min_coverage": 0.55,
+      "capability": "Explica o mecanismo, reproduz um exemplo e reconhece limites básicos."
+    },
+    "intermediate": {
+      "label": "Intermediate",
+      "order": 2,
+      "min_words": 900,
+      "min_coverage": 0.65,
+      "capability": "Entrega uma solução testada, conecta componentes e lida com erros previsíveis."
+    },
+    "advanced": {
+      "label": "Advanced",
+      "order": 3,
+      "min_words": 1200,
+      "min_coverage": 0.72,
+      "capability": "Diagnostica falhas, mede trade-offs e decide sob restrições de produção."
+    },
+    "expert": {
+      "label": "Expert",
+      "order": 4,
+      "min_words": 1500,
+      "min_coverage": 0.78,
+      "capability": "Projeta, opera e evolui sistemas sob falhas, escala e restrições organizacionais."
+    }
+  },
+  "tracks": {
+    "software-engineer": {
+      "label": "Software Engineer",
+      "path": "atlas/software-engineer.md"
+    },
+    "backend-engineer": {
+      "label": "Backend Engineer",
+      "path": "atlas/backend-engineer.md"
+    },
+    "distributed-systems": {
+      "label": "Distributed Systems",
+      "path": "atlas/distributed-systems.md"
+    },
+    "software-architect": {
+      "label": "Software Architect",
+      "path": "atlas/software-architect.md"
+    },
+    "platform-cloud": {
+      "label": "Platform / Cloud Engineer",
+      "path": "atlas/platform-cloud-engineer.md"
+    },
+    "ai-engineer": {
+      "label": "AI Engineer",
+      "path": "atlas/ai-engineer.md"
+    }
+  },
+  "topics": [
+    {
+      "id": "fundamentals",
+      "title": "Fundamentos de Computação",
+      "path": "fundamentals/README.md",
+      "domain": "Fundamentos",
+      "level": "beginner",
+      "prerequisites": [],
+      "tracks": [
+        "software-engineer",
+        "backend-engineer",
+        "distributed-systems",
+        "software-architect",
+        "platform-cloud",
+        "ai-engineer"
+      ],
+      "profile": "foundation"
+    },
+    {
+      "id": "computer-science",
+      "title": "Ciência da Computação",
+      "path": "computer-science/README.md",
+      "domain": "Fundamentos",
+      "level": "beginner",
+      "prerequisites": [
+        "fundamentals"
+      ],
+      "tracks": [
+        "software-engineer",
+        "backend-engineer",
+        "distributed-systems",
+        "software-architect",
+        "platform-cloud",
+        "ai-engineer"
+      ],
+      "profile": "foundation"
+    },
+    {
+      "id": "git",
+      "title": "Git",
+      "path": "developer-tools/git/README.md",
+      "domain": "Ferramentas",
+      "level": "beginner",
+      "prerequisites": [
+        "fundamentals"
+      ],
+      "tracks": [
+        "software-engineer",
+        "backend-engineer",
+        "software-architect",
+        "platform-cloud",
+        "ai-engineer"
+      ],
+      "profile": "implementation"
+    },
+    {
+      "id": "vim",
+      "title": "Vim",
+      "path": "developer-tools/vim/README.md",
+      "domain": "Ferramentas",
+      "level": "beginner",
+      "prerequisites": [],
+      "tracks": [
+        "software-engineer",
+        "backend-engineer",
+        "platform-cloud"
+      ],
+      "profile": "foundation"
+    },
+    {
+      "id": "python",
+      "title": "Python",
+      "path": "languages/python/README.md",
+      "domain": "Linguagens",
+      "level": "beginner",
+      "prerequisites": [
+        "fundamentals"
+      ],
+      "tracks": [
+        "software-engineer",
+        "backend-engineer",
+        "distributed-systems",
+        "software-architect",
+        "platform-cloud",
+        "ai-engineer"
+      ],
+      "profile": "implementation"
+    },
+    {
+      "id": "javascript",
+      "title": "JavaScript",
+      "path": "languages/javascript/README.md",
+      "domain": "Linguagens",
+      "level": "beginner",
+      "prerequisites": [
+        "fundamentals"
+      ],
+      "tracks": [
+        "software-engineer",
+        "backend-engineer",
+        "distributed-systems",
+        "software-architect",
+        "platform-cloud"
+      ],
+      "profile": "implementation"
+    },
+    {
+      "id": "golang",
+      "title": "Go",
+      "path": "languages/golang/README.md",
+      "domain": "Linguagens",
+      "level": "beginner",
+      "prerequisites": [
+        "fundamentals"
+      ],
+      "tracks": [
+        "software-engineer",
+        "backend-engineer",
+        "distributed-systems",
+        "software-architect",
+        "platform-cloud"
+      ],
+      "profile": "implementation"
+    },
+    {
+      "id": "kotlin",
+      "title": "Kotlin",
+      "path": "languages/kotlin/README.md",
+      "domain": "Linguagens",
+      "level": "beginner",
+      "prerequisites": [
+        "fundamentals"
+      ],
+      "tracks": [
+        "software-engineer",
+        "backend-engineer",
+        "distributed-systems",
+        "software-architect",
+        "platform-cloud"
+      ],
+      "profile": "implementation"
+    },
+    {
+      "id": "typescript",
+      "title": "TypeScript",
+      "path": "languages/typescript/README.md",
+      "domain": "Linguagens",
+      "level": "intermediate",
+      "prerequisites": [
+        "javascript"
+      ],
+      "tracks": [
+        "software-engineer",
+        "backend-engineer",
+        "software-architect",
+        "ai-engineer"
+      ],
+      "profile": "implementation"
+    },
+    {
+      "id": "software-engineering",
+      "title": "Engenharia de Software",
+      "path": "software-engineering/README.md",
+      "domain": "Engenharia de Software",
+      "level": "intermediate",
+      "prerequisites": [
+        "fundamentals",
+        "git"
+      ],
+      "tracks": [
+        "software-engineer",
+        "backend-engineer",
+        "distributed-systems",
+        "software-architect",
+        "platform-cloud",
+        "ai-engineer"
+      ],
+      "profile": "architecture"
+    },
+    {
+      "id": "principles",
+      "title": "Princípios de Engenharia",
+      "path": "software-engineering/principles.md",
+      "domain": "Engenharia de Software",
+      "level": "intermediate",
+      "prerequisites": [
+        "software-engineering"
+      ],
+      "tracks": [
+        "software-engineer",
+        "backend-engineer",
+        "software-architect"
+      ],
+      "profile": "concept"
+    },
+    {
+      "id": "design-patterns",
+      "title": "Design Patterns",
+      "path": "design-patterns/README.md",
+      "domain": "Design",
+      "level": "intermediate",
+      "prerequisites": [
+        "principles"
+      ],
+      "tracks": [
+        "software-engineer",
+        "backend-engineer",
+        "software-architect"
+      ],
+      "profile": "concept"
+    },
+    {
+      "id": "patterns-creational",
+      "title": "Patterns Criacionais",
+      "path": "design-patterns/creational.md",
+      "domain": "Design",
+      "level": "intermediate",
+      "prerequisites": [
+        "design-patterns"
+      ],
+      "tracks": [
+        "software-engineer",
+        "backend-engineer",
+        "software-architect"
+      ],
+      "profile": "concept"
+    },
+    {
+      "id": "patterns-structural",
+      "title": "Patterns Estruturais",
+      "path": "design-patterns/structural.md",
+      "domain": "Design",
+      "level": "intermediate",
+      "prerequisites": [
+        "design-patterns"
+      ],
+      "tracks": [
+        "software-engineer",
+        "backend-engineer",
+        "software-architect"
+      ],
+      "profile": "concept"
+    },
+    {
+      "id": "patterns-behavioral",
+      "title": "Patterns Comportamentais",
+      "path": "design-patterns/behavioral.md",
+      "domain": "Design",
+      "level": "intermediate",
+      "prerequisites": [
+        "design-patterns"
+      ],
+      "tracks": [
+        "software-engineer",
+        "backend-engineer",
+        "software-architect"
+      ],
+      "profile": "concept"
+    },
+    {
+      "id": "strategy",
+      "title": "Strategy",
+      "path": "design-patterns/strategy.md",
+      "domain": "Design",
+      "level": "intermediate",
+      "prerequisites": [
+        "design-patterns"
+      ],
+      "tracks": [
+        "software-engineer",
+        "backend-engineer"
+      ],
+      "profile": "implementation"
+    },
+    {
+      "id": "testing",
+      "title": "Testing",
+      "path": "software-engineering/testing/README.md",
+      "domain": "Engenharia de Software",
+      "level": "intermediate",
+      "prerequisites": [
+        "software-engineering"
+      ],
+      "tracks": [
+        "software-engineer",
+        "backend-engineer",
+        "distributed-systems",
+        "software-architect",
+        "platform-cloud",
+        "ai-engineer"
+      ],
+      "profile": "implementation"
+    },
+    {
+      "id": "sdd",
+      "title": "Spec-Driven Development",
+      "path": "spec-driven-development/README.md",
+      "domain": "Engenharia de Software",
+      "level": "intermediate",
+      "prerequisites": [
+        "software-engineering",
+        "testing"
+      ],
+      "tracks": [
+        "software-engineer",
+        "backend-engineer",
+        "software-architect",
+        "ai-engineer"
+      ],
+      "profile": "implementation"
+    },
+    {
+      "id": "ddd-strategic",
+      "title": "DDD Estratégico",
+      "path": "software-engineering/ddd/strategic.md",
+      "domain": "Engenharia de Software",
+      "level": "advanced",
+      "prerequisites": [
+        "principles"
+      ],
+      "tracks": [
+        "backend-engineer",
+        "software-architect"
+      ],
+      "profile": "architecture"
+    },
+    {
+      "id": "ddd-tactical",
+      "title": "DDD Tático",
+      "path": "software-engineering/ddd/tactical.md",
+      "domain": "Engenharia de Software",
+      "level": "advanced",
+      "prerequisites": [
+        "ddd-strategic",
+        "testing"
+      ],
+      "tracks": [
+        "backend-engineer",
+        "software-architect"
+      ],
+      "profile": "implementation"
+    },
+    {
+      "id": "system-design",
+      "title": "System Design",
+      "path": "software-engineering/system-design/README.md",
+      "domain": "Engenharia de Software",
+      "level": "advanced",
+      "prerequisites": [
+        "testing",
+        "software-engineering"
+      ],
+      "tracks": [
+        "backend-engineer",
+        "distributed-systems",
+        "software-architect",
+        "platform-cloud"
+      ],
+      "profile": "architecture"
+    },
+    {
+      "id": "system-design-cases",
+      "title": "Estudos de System Design",
+      "path": "software-engineering/system-design/case-studies.md",
+      "domain": "Engenharia de Software",
+      "level": "expert",
+      "prerequisites": [
+        "system-design"
+      ],
+      "tracks": [
+        "software-engineer",
+        "backend-engineer",
+        "distributed-systems",
+        "software-architect",
+        "platform-cloud"
+      ],
+      "profile": "architecture"
+    },
+    {
+      "id": "architecture",
+      "title": "Arquitetura de Software",
+      "path": "architecture/README.md",
+      "domain": "Arquitetura",
+      "level": "advanced",
+      "prerequisites": [
+        "software-engineering",
+        "testing"
+      ],
+      "tracks": [
+        "backend-engineer",
+        "distributed-systems",
+        "software-architect",
+        "platform-cloud"
+      ],
+      "profile": "architecture"
+    },
+    {
+      "id": "architecture-styles",
+      "title": "Estilos Arquiteturais",
+      "path": "architecture/styles.md",
+      "domain": "Arquitetura",
+      "level": "advanced",
+      "prerequisites": [
+        "architecture"
+      ],
+      "tracks": [
+        "backend-engineer",
+        "software-architect",
+        "platform-cloud"
+      ],
+      "profile": "comparison"
+    },
+    {
+      "id": "modular-monolith",
+      "title": "Modular Monolith",
+      "path": "architecture/modular-monolith/README.md",
+      "domain": "Arquitetura",
+      "level": "advanced",
+      "prerequisites": [
+        "architecture",
+        "ddd-strategic"
+      ],
+      "tracks": [
+        "backend-engineer",
+        "software-architect"
+      ],
+      "profile": "architecture"
+    },
+    {
+      "id": "clean-hexagonal",
+      "title": "Clean e Hexagonal",
+      "path": "architecture/clean-hexagonal/README.md",
+      "domain": "Arquitetura",
+      "level": "advanced",
+      "prerequisites": [
+        "architecture",
+        "principles"
+      ],
+      "tracks": [
+        "backend-engineer",
+        "software-architect"
+      ],
+      "profile": "architecture"
+    },
+    {
+      "id": "adr",
+      "title": "Architecture Decision Records",
+      "path": "architecture/decision-records.md",
+      "domain": "Arquitetura",
+      "level": "intermediate",
+      "prerequisites": [
+        "software-engineering"
+      ],
+      "tracks": [
+        "software-engineer",
+        "backend-engineer",
+        "software-architect",
+        "platform-cloud",
+        "ai-engineer"
+      ],
+      "profile": "concept"
+    },
+    {
+      "id": "microservices",
+      "title": "Microservices",
+      "path": "architecture/microservices/README.md",
+      "domain": "Arquitetura",
+      "level": "expert",
+      "prerequisites": [
+        "architecture",
+        "distributed-systems-core"
+      ],
+      "tracks": [
+        "backend-engineer",
+        "distributed-systems",
+        "software-architect",
+        "platform-cloud"
+      ],
+      "profile": "architecture"
+    },
+    {
+      "id": "event-driven",
+      "title": "Event-Driven Architecture",
+      "path": "architecture/event-driven/README.md",
+      "domain": "Arquitetura",
+      "level": "expert",
+      "prerequisites": [
+        "architecture",
+        "messaging-kafka"
+      ],
+      "tracks": [
+        "backend-engineer",
+        "distributed-systems",
+        "software-architect"
+      ],
+      "profile": "architecture"
+    },
+    {
+      "id": "cqrs-event-sourcing",
+      "title": "CQRS e Event Sourcing",
+      "path": "architecture/cqrs-event-sourcing/README.md",
+      "domain": "Arquitetura",
+      "level": "expert",
+      "prerequisites": [
+        "event-driven",
+        "transactions-consistency"
+      ],
+      "tracks": [
+        "backend-engineer",
+        "distributed-systems",
+        "software-architect"
+      ],
+      "profile": "architecture"
+    },
+    {
+      "id": "architecture-comparison",
+      "title": "Comparação Arquitetural",
+      "path": "architecture/comparison.md",
+      "domain": "Arquitetura",
+      "level": "expert",
+      "prerequisites": [
+        "architecture-styles",
+        "distributed-systems-core"
+      ],
+      "tracks": [
+        "software-architect"
+      ],
+      "profile": "comparison"
+    },
+    {
+      "id": "database-comparison",
+      "title": "Comparação de Bancos",
+      "path": "databases/comparison.md",
+      "domain": "Dados",
+      "level": "intermediate",
+      "prerequisites": [
+        "fundamentals"
+      ],
+      "tracks": [
+        "software-engineer",
+        "backend-engineer",
+        "distributed-systems",
+        "software-architect",
+        "ai-engineer"
+      ],
+      "profile": "comparison"
+    },
+    {
+      "id": "postgresql",
+      "title": "PostgreSQL",
+      "path": "databases/postgresql/README.md",
+      "domain": "Dados",
+      "level": "intermediate",
+      "prerequisites": [
+        "database-comparison"
+      ],
+      "tracks": [
+        "software-engineer",
+        "backend-engineer",
+        "distributed-systems",
+        "software-architect"
+      ],
+      "profile": "implementation"
+    },
+    {
+      "id": "mongodb",
+      "title": "MongoDB",
+      "path": "databases/mongodb/README.md",
+      "domain": "Dados",
+      "level": "intermediate",
+      "prerequisites": [
+        "database-comparison"
+      ],
+      "tracks": [
+        "backend-engineer",
+        "software-architect"
+      ],
+      "profile": "implementation"
+    },
+    {
+      "id": "redis",
+      "title": "Redis",
+      "path": "databases/redis/README.md",
+      "domain": "Dados",
+      "level": "intermediate",
+      "prerequisites": [
+        "database-comparison"
+      ],
+      "tracks": [
+        "backend-engineer",
+        "distributed-systems",
+        "platform-cloud",
+        "ai-engineer"
+      ],
+      "profile": "implementation"
+    },
+    {
+      "id": "dynamodb",
+      "title": "DynamoDB",
+      "path": "databases/dynamodb/README.md",
+      "domain": "Dados",
+      "level": "advanced",
+      "prerequisites": [
+        "database-comparison"
+      ],
+      "tracks": [
+        "backend-engineer",
+        "distributed-systems",
+        "software-architect",
+        "platform-cloud"
+      ],
+      "profile": "implementation"
+    },
+    {
+      "id": "transactions-consistency",
+      "title": "Transações e Consistência",
+      "path": "databases/transactions-and-consistency.md",
+      "domain": "Dados",
+      "level": "advanced",
+      "prerequisites": [
+        "postgresql"
+      ],
+      "tracks": [
+        "backend-engineer",
+        "distributed-systems",
+        "software-architect"
+      ],
+      "profile": "concept"
+    },
+    {
+      "id": "distributed-fundamentals",
+      "title": "Fundamentos Distribuídos",
+      "path": "distributed-systems/fundamentals.md",
+      "domain": "Sistemas Distribuídos",
+      "level": "advanced",
+      "prerequisites": [
+        "fundamentals",
+        "transactions-consistency"
+      ],
+      "tracks": [
+        "backend-engineer",
+        "distributed-systems",
+        "software-architect",
+        "platform-cloud"
+      ],
+      "profile": "concept"
+    },
+    {
+      "id": "resilience",
+      "title": "Padrões de Resiliência",
+      "path": "distributed-systems/resilience-patterns.md",
+      "domain": "Sistemas Distribuídos",
+      "level": "advanced",
+      "prerequisites": [
+        "distributed-fundamentals"
+      ],
+      "tracks": [
+        "backend-engineer",
+        "distributed-systems",
+        "software-architect",
+        "platform-cloud"
+      ],
+      "profile": "operations"
+    },
+    {
+      "id": "distributed-systems-core",
+      "title": "Sistemas Distribuídos",
+      "path": "distributed-systems/README.md",
+      "domain": "Sistemas Distribuídos",
+      "level": "advanced",
+      "prerequisites": [
+        "distributed-fundamentals",
+        "resilience"
+      ],
+      "tracks": [
+        "backend-engineer",
+        "distributed-systems",
+        "software-architect",
+        "platform-cloud"
+      ],
+      "profile": "architecture"
+    },
+    {
+      "id": "consensus",
+      "title": "Consenso e Coordenação",
+      "path": "distributed-systems/consensus.md",
+      "domain": "Sistemas Distribuídos",
+      "level": "expert",
+      "prerequisites": [
+        "distributed-systems-core"
+      ],
+      "tracks": [
+        "distributed-systems",
+        "software-architect",
+        "platform-cloud"
+      ],
+      "profile": "concept"
+    },
+    {
+      "id": "messaging-kafka",
+      "title": "Kafka",
+      "path": "messaging/kafka/README.md",
+      "domain": "Mensageria",
+      "level": "advanced",
+      "prerequisites": [
+        "distributed-fundamentals"
+      ],
+      "tracks": [
+        "backend-engineer",
+        "distributed-systems",
+        "software-architect",
+        "platform-cloud"
+      ],
+      "profile": "implementation"
+    },
+    {
+      "id": "messaging-sqs",
+      "title": "Amazon SQS",
+      "path": "messaging/sqs/README.md",
+      "domain": "Mensageria",
+      "level": "advanced",
+      "prerequisites": [
+        "distributed-fundamentals"
+      ],
+      "tracks": [
+        "backend-engineer",
+        "distributed-systems",
+        "software-architect",
+        "platform-cloud"
+      ],
+      "profile": "implementation"
+    },
+    {
+      "id": "messaging-comparison",
+      "title": "Kafka versus SQS",
+      "path": "messaging/comparison.md",
+      "domain": "Mensageria",
+      "level": "advanced",
+      "prerequisites": [
+        "messaging-kafka",
+        "messaging-sqs"
+      ],
+      "tracks": [
+        "backend-engineer",
+        "distributed-systems",
+        "software-architect"
+      ],
+      "profile": "comparison"
+    },
+    {
+      "id": "containers",
+      "title": "Containers",
+      "path": "containers/README.md",
+      "domain": "Infraestrutura",
+      "level": "intermediate",
+      "prerequisites": [
+        "fundamentals"
+      ],
+      "tracks": [
+        "software-engineer",
+        "backend-engineer",
+        "platform-cloud",
+        "ai-engineer"
+      ],
+      "profile": "operations"
+    },
+    {
+      "id": "docker",
+      "title": "Docker",
+      "path": "containers/docker/README.md",
+      "domain": "Infraestrutura",
+      "level": "intermediate",
+      "prerequisites": [
+        "containers"
+      ],
+      "tracks": [
+        "software-engineer",
+        "backend-engineer",
+        "platform-cloud",
+        "ai-engineer"
+      ],
+      "profile": "implementation"
+    },
+    {
+      "id": "container-security",
+      "title": "Segurança de Containers",
+      "path": "containers/security.md",
+      "domain": "Infraestrutura",
+      "level": "advanced",
+      "prerequisites": [
+        "docker"
+      ],
+      "tracks": [
+        "backend-engineer",
+        "platform-cloud"
+      ],
+      "profile": "operations"
+    },
+    {
+      "id": "cloud",
+      "title": "Cloud",
+      "path": "cloud/README.md",
+      "domain": "Infraestrutura",
+      "level": "advanced",
+      "prerequisites": [
+        "fundamentals",
+        "containers"
+      ],
+      "tracks": [
+        "backend-engineer",
+        "distributed-systems",
+        "software-architect",
+        "platform-cloud",
+        "ai-engineer"
+      ],
+      "profile": "operations"
+    },
+    {
+      "id": "kubernetes",
+      "title": "Kubernetes",
+      "path": "kubernetes/README.md",
+      "domain": "Infraestrutura",
+      "level": "advanced",
+      "prerequisites": [
+        "docker",
+        "cloud"
+      ],
+      "tracks": [
+        "backend-engineer",
+        "distributed-systems",
+        "software-architect",
+        "platform-cloud",
+        "ai-engineer"
+      ],
+      "profile": "operations"
+    },
+    {
+      "id": "kubernetes-workloads",
+      "title": "Kubernetes Workloads e Networking",
+      "path": "kubernetes/workloads-and-networking.md",
+      "domain": "Infraestrutura",
+      "level": "advanced",
+      "prerequisites": [
+        "kubernetes"
+      ],
+      "tracks": [
+        "backend-engineer",
+        "distributed-systems",
+        "platform-cloud"
+      ],
+      "profile": "operations"
+    },
+    {
+      "id": "kubernetes-operations",
+      "title": "Kubernetes Operação e Segurança",
+      "path": "kubernetes/operations-and-security.md",
+      "domain": "Infraestrutura",
+      "level": "expert",
+      "prerequisites": [
+        "kubernetes-workloads",
+        "observability",
+        "security"
+      ],
+      "tracks": [
+        "platform-cloud",
+        "distributed-systems"
+      ],
+      "profile": "operations"
+    },
+    {
+      "id": "api-gateways",
+      "title": "API Gateways",
+      "path": "api-gateways/README.md",
+      "domain": "API Gateways",
+      "level": "advanced",
+      "prerequisites": [
+        "distributed-fundamentals",
+        "security"
+      ],
+      "tracks": [
+        "backend-engineer",
+        "software-architect",
+        "platform-cloud"
+      ],
+      "profile": "operations"
+    },
+    {
+      "id": "kong",
+      "title": "Kong",
+      "path": "api-gateways/kong/README.md",
+      "domain": "API Gateways",
+      "level": "advanced",
+      "prerequisites": [
+        "api-gateways"
+      ],
+      "tracks": [
+        "backend-engineer",
+        "platform-cloud"
+      ],
+      "profile": "implementation"
+    },
+    {
+      "id": "apigee",
+      "title": "Apigee",
+      "path": "api-gateways/apigee/README.md",
+      "domain": "API Gateways",
+      "level": "advanced",
+      "prerequisites": [
+        "api-gateways"
+      ],
+      "tracks": [
+        "backend-engineer",
+        "platform-cloud"
+      ],
+      "profile": "implementation"
+    },
+    {
+      "id": "kong-vs-apigee",
+      "title": "Kong versus Apigee",
+      "path": "api-gateways/kong-vs-apigee.md",
+      "domain": "API Gateways",
+      "level": "advanced",
+      "prerequisites": [
+        "kong",
+        "apigee"
+      ],
+      "tracks": [
+        "software-architect",
+        "platform-cloud"
+      ],
+      "profile": "comparison"
+    },
+    {
+      "id": "observability",
+      "title": "Observabilidade",
+      "path": "observability/README.md",
+      "domain": "Operação",
+      "level": "advanced",
+      "prerequisites": [
+        "software-engineering"
+      ],
+      "tracks": [
+        "software-engineer",
+        "backend-engineer",
+        "distributed-systems",
+        "software-architect",
+        "platform-cloud",
+        "ai-engineer"
+      ],
+      "profile": "operations"
+    },
+    {
+      "id": "security",
+      "title": "Segurança",
+      "path": "security/README.md",
+      "domain": "Segurança",
+      "level": "advanced",
+      "prerequisites": [
+        "software-engineering"
+      ],
+      "tracks": [
+        "software-engineer",
+        "backend-engineer",
+        "distributed-systems",
+        "software-architect",
+        "platform-cloud",
+        "ai-engineer"
+      ],
+      "profile": "operations"
+    },
+    {
+      "id": "ai-fundamentals",
+      "title": "Fundamentos de IA",
+      "path": "artificial-intelligence/fundamentals/README.md",
+      "domain": "Inteligência Artificial",
+      "level": "beginner",
+      "prerequisites": [
+        "fundamentals"
+      ],
+      "tracks": [
+        "ai-engineer"
+      ],
+      "profile": "foundation"
+    },
+    {
+      "id": "machine-learning",
+      "title": "Machine Learning",
+      "path": "artificial-intelligence/machine-learning/README.md",
+      "domain": "Inteligência Artificial",
+      "level": "intermediate",
+      "prerequisites": [
+        "ai-fundamentals"
+      ],
+      "tracks": [
+        "ai-engineer"
+      ],
+      "profile": "implementation"
+    },
+    {
+      "id": "deep-learning",
+      "title": "Deep Learning",
+      "path": "artificial-intelligence/deep-learning/README.md",
+      "domain": "Inteligência Artificial",
+      "level": "advanced",
+      "prerequisites": [
+        "machine-learning"
+      ],
+      "tracks": [
+        "ai-engineer"
+      ],
+      "profile": "implementation"
+    },
+    {
+      "id": "llm",
+      "title": "Large Language Models",
+      "path": "artificial-intelligence/llm/README.md",
+      "domain": "Inteligência Artificial",
+      "level": "advanced",
+      "prerequisites": [
+        "deep-learning"
+      ],
+      "tracks": [
+        "ai-engineer"
+      ],
+      "profile": "implementation"
+    },
+    {
+      "id": "generative-ai",
+      "title": "Generative AI",
+      "path": "artificial-intelligence/generative-ai/README.md",
+      "domain": "Inteligência Artificial",
+      "level": "intermediate",
+      "prerequisites": [
+        "ai-fundamentals"
+      ],
+      "tracks": [
+        "ai-engineer"
+      ],
+      "profile": "implementation"
+    },
+    {
+      "id": "ai-engineering",
+      "title": "AI Engineering",
+      "path": "ai-engineering/README.md",
+      "domain": "AI Engineering",
+      "level": "advanced",
+      "prerequisites": [
+        "generative-ai",
+        "testing",
+        "observability"
+      ],
+      "tracks": [
+        "ai-engineer"
+      ],
+      "profile": "operations"
+    },
+    {
+      "id": "ai-evaluation",
+      "title": "Avaliação de IA",
+      "path": "ai-engineering/evaluation.md",
+      "domain": "AI Engineering",
+      "level": "advanced",
+      "prerequisites": [
+        "ai-engineering"
+      ],
+      "tracks": [
+        "ai-engineer"
+      ],
+      "profile": "implementation"
+    },
+    {
+      "id": "ai-patterns",
+      "title": "Padrões de AI Engineering",
+      "path": "ai-engineering/patterns.md",
+      "domain": "AI Engineering",
+      "level": "expert",
+      "prerequisites": [
+        "ai-engineering",
+        "ai-evaluation"
+      ],
+      "tracks": [
+        "ai-engineer"
+      ],
+      "profile": "architecture"
+    },
+    {
+      "id": "mcp",
+      "title": "Model Context Protocol",
+      "path": "ai-engineering/mcp/README.md",
+      "domain": "AI Engineering",
+      "level": "advanced",
+      "prerequisites": [
+        "ai-engineering",
+        "security"
+      ],
+      "tracks": [
+        "ai-engineer"
+      ],
+      "profile": "implementation"
+    },
+    {
+      "id": "agents",
+      "title": "Agentes",
+      "path": "agents/README.md",
+      "domain": "AI Engineering",
+      "level": "expert",
+      "prerequisites": [
+        "ai-evaluation",
+        "mcp"
+      ],
+      "tracks": [
+        "ai-engineer"
+      ],
+      "profile": "operations"
+    },
+    {
+      "id": "skills",
+      "title": "Skills",
+      "path": "skills/README.md",
+      "domain": "AI Engineering",
+      "level": "intermediate",
+      "prerequisites": [
+        "software-engineering"
+      ],
+      "tracks": [
+        "software-engineer",
+        "ai-engineer"
+      ],
+      "profile": "implementation"
+    }
+  ]
+}

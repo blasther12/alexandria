@@ -355,7 +355,7 @@ indisponível; documente o comportamento e o rollback.
   os mecanismos centrais.
 - Docker. [Documentation](https://docs.docker.com/) cobre build, runtime, network
   e storage no ecossistema Docker.
-- CNCF. [Cloud Native Security Whitepaper](https://github.com/cncf/tag-security/tree/main/security-whitepaper)
+- CNCF. [Cloud Native Security Whitepaper](https://github.com/cncf/tag-security/blob/main/community/resources/security-whitepaper/v2/cloud-native-security-whitepaper.md)
   oferece uma visão de segurança por lifecycle.
 
 ---

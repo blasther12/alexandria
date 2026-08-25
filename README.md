@@ -59,14 +59,22 @@ demonstrar capacidade, não apenas terminar leituras.
 
 ## Trilhas de estudo
 
-- [Engenheiro(a) de software](atlas/software-engineer.md): computação, código,
-  testes, dados, entrega e operação.
-- [Backend](atlas/backend-engineer.md): APIs, persistência, mensageria,
-  confiabilidade e sistemas distribuídos.
-- [Arquitetura](atlas/software-architect.md): atributos de qualidade, decisões,
-  evolução e desenho sociotécnico.
-- [AI Engineer](atlas/ai-engineer.md): modelos, RAG, avaliação, ferramentas e
-  aplicações seguras.
+A trilha de [Engenharia de Software](atlas/software-engineer.md) fornece a base
+geral. Depois dela, ou em paralelo conforme a experiência, o Atlas oferece cinco
+especializações canônicas:
+
+| Trilha | Foco | Evidência final |
+| --- | --- | --- |
+| [Backend Engineer](atlas/backend-engineer.md) | APIs, dados, concorrência, mensageria e confiabilidade | serviço resiliente medido sob falha |
+| [Distributed Systems](atlas/distributed-systems-engineer.md) | tempo, replicação, consistência, coordenação e recovery | sistema com falhas parciais reproduzidas |
+| [Software Architect](atlas/software-architect.md) | atributos de qualidade, boundaries e evolução | decisões com ADRs e fitness functions |
+| [Platform / Cloud Engineer](atlas/platform-cloud-engineer.md) | containers, Kubernetes, cloud, GitOps e plataforma | golden path seguro, observável e operável |
+| [AI Engineer](atlas/ai-engineer.md) | evals, LLMs, RAG, tools e agentes | feature avaliada com custo e risco controlados |
+
+Cada trilha começa com diagnóstico, passa por laboratórios e usa os mesmos
+[projetos progressivos](projects/README.md) como campo de provas. A conclusão
+exige código, falha exercitada, observabilidade, decisão técnica e recuperação,
+não apenas páginas lidas.
 
 ## Linguagens
 

@@ -112,6 +112,9 @@ jobs:
           node-version: "24"
           package-manager-cache: false
 
+      - name: Allow Puppeteer install script
+        run: npm config set allow-scripts=puppeteer --location=user
+
       - name: Install Mermaid CLI
         run: npm install --global @mermaid-js/mermaid-cli@11.16.0
 

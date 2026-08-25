@@ -30,6 +30,60 @@ arquitetura”. Dê o contexto, a métrica e o custo da decisão. Diferencie
 garantias do protocolo, comportamento de uma implementação e convenções do
 ecossistema.
 
+## Contrato de profundidade
+
+Alexandria não mede qualidade por quantidade de palavras. Um texto longo pode
+continuar raso quando apenas enumera conceitos. Profundidade significa permitir
+que o leitor **preveja comportamento, tome decisões e investigue falhas**.
+
+Há três papéis editoriais distintos:
+
+### Página de índice
+
+Pode ser curta. Deve explicar o mapa do domínio, a ordem de estudo e por que os
+capítulos se conectam. Não precisa repetir o conteúdo dos guias canônicos.
+
+### Guia canônico
+
+É o material principal de um assunto. Deve, quando aplicável, conter:
+
+1. problema concreto e modelo mental;
+2. mecanismo interno percorrido passo a passo;
+3. garantias, limites e pelo menos uma intuição enganosa;
+4. decisões com trade-offs reais e sinais para reconsiderar;
+5. caminho crítico de uma operação em produção;
+6. modos de falha com sintomas, evidências e mitigação;
+7. performance/capacidade com experimento reproduzível;
+8. segurança, testes e observabilidade ligados ao mecanismo;
+9. exemplo mínimo e contraste com a versão operável;
+10. exercícios que produzam evidência de aprendizagem;
+11. referências primárias para as principais garantias.
+
+Use [o template de assunto](templates/topic.md) como checklist crítico. Se uma
+seção não se aplica, não crie texto artificial só para preenchê-la.
+
+### Codex ou estudo aprofundado
+
+Existe quando um único guia ficaria grande demais ou quando o tema precisa de
+uma sequência própria. Deve aprofundar partes do mecanismo, incluir experimentos,
+casos de produção, diagnóstico e referências sem duplicar a página canônica.
+
+### Teste rápido de profundidade
+
+Antes de marcar uma página como consolidada, tente responder sem abrir outro
+arquivo:
+
+- Consigo desenhar o mecanismo e explicar onde o estado muda?
+- Consigo dizer o que acontece quando uma dependência atrasa, duplica ou falha?
+- Consigo comparar duas opções sem usar “depende” como resposta final?
+- Consigo medir uma hipótese e dizer o que o experimento não prova?
+- Sei quais sinais buscaria durante um incidente?
+- Sei qual propriedade de segurança precisa ser preservada?
+- Há uma fonte primária para confirmar as garantias mais importantes?
+
+Se a maioria das respostas for “não”, o artigo ainda é um mapa ou uma introdução,
+não um guia consolidado.
+
 ## Como adicionar um assunto
 
 1. Crie o diretório no domínio mais próximo; não replique o mesmo guia em dois

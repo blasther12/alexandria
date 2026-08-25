@@ -80,6 +80,45 @@ Composição monta comportamentos explícitos e evita hierarquias frágeis. Hera
 
 Valores imutáveis reduzem aliasing e races, facilitam cache/retry e tornam transições observáveis. Custos incluem cópia/alocação e integração com frameworks. Prefira imutabilidade para Value Objects, mensagens e configuração; use mutação localizada atrás de ownership claro em buffers/hot paths medidos.
 
+## Princípios precisam de evidência
+
+Uma aplicação intermediária dos princípios exige perguntar se o design melhorou **algum resultado observável**. Exemplos:
+
+- SRP: mudanças passaram a tocar menos módulos e owners?
+- DIP: um adapter realmente pode ser testado/substituído sem contaminar regra?
+- DRY: a abstração reduziu divergência ou passou a exigir condicionais por consumidor?
+- KISS: onboarding/debug ficou mais simples?
+- Imutabilidade: eliminou race/aliasing e qual foi o custo de alocação?
+
+Use histórico Git, profiling, tempo de build/test, incidentes e feedback de manutenção como evidência. Princípios não devem virar pontuação estética em code review.
+
+## Performance e princípios
+
+Design “limpo” ainda precisa respeitar caminhos quentes. Algumas tensões:
+
+- objetos imutáveis podem aumentar cópia/alocação;
+- abstrações virtuais/dinâmicas podem reduzir otimizações em hot path;
+- interfaces excessivamente genéricas podem impedir batching;
+- encapsulamento ruim pode criar N+1 escondido;
+- decomposição excessiva pode multiplicar hops remotos.
+
+Isso não invalida princípios. Significa que **performance é uma restrição do contexto**. Profile antes de quebrar encapsulamento e mantenha otimização localizada, documentada e testada.
+
+Um buffer mutável com owner único pode ser mais simples e rápido que copiar megabytes para preservar uma imutabilidade dogmática.
+
+## Code review usando princípios
+
+Em vez de “isso viola SOLID”, prefira perguntas concretas:
+
+- qual mudança futura este seam facilita?
+- quais consumidores realmente compartilham esta regra?
+- esta interface esconde um custo relevante?
+- qual invariant fica protegida?
+- há uma alternativa mais simples?
+- temos evidência de que este coupling dói?
+
+Isso transforma princípio em ferramenta de raciocínio, não argumento de autoridade.
+
 ## Anti-patterns
 
 - interface e implementação `Foo`/`FooImpl` sem variação;
@@ -89,7 +128,9 @@ Valores imutáveis reduzem aliasing e races, facilitam cache/retry e tornam tran
 - boolean blindness (`process(true, false, true)`);
 - objeto anêmico com invariantes espalhadas;
 - imutabilidade superficial contendo coleção mutável compartilhada;
-- abstração que exige `if concreteType` em consumidores.
+- abstração que exige `if concreteType` em consumidores;
+- “SOLID score” usado como métrica de qualidade;
+- refatoração que piora performance crítica sem medição.
 
 ## Exercícios em quatro níveis
 
@@ -108,6 +149,16 @@ Use o histórico Git para medir change coupling. Reorganize um slice por capabil
 ### Expert
 
 Remova um framework interno especulativo. Preserve compatibilidade, migre dois consumidores gradualmente e registre em ADR quais opções foram perdidas/ganhas e o gatilho para reintrodução.
+
+## Checkpoint de decisão
+
+Antes de introduzir uma abstração, escreva três frases:
+
+1. **Força:** qual mudança/risco existe hoje?
+2. **Seam:** qual menor fronteira contém essa variação?
+3. **Evidência:** como saberemos se a fronteira melhorou manutenção, teste, performance ou operação?
+
+Se a primeira frase depende apenas de “talvez no futuro”, YAGNI merece atenção. Se a terceira não pode ser respondida, provavelmente o benefício ainda está abstrato demais.
 
 ## Referências
 

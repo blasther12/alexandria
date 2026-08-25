@@ -19,6 +19,7 @@ ela impõe, como falha e como comprovamos que funciona?**
 | construir uma base sólida | [Fundamentos](fundamentals/README.md) | modelo mental de computação, redes e engenharia |
 | escolher uma linguagem | [Comparação de linguagens](languages/comparison.md) | decisão baseada em contexto e trade-offs |
 | seguir um currículo completo | [Atlas](atlas/README.md) | ordem, dependências e marcos verificáveis |
+| ver nível e pré-requisitos de cada assunto | [Matriz curricular](CURRICULUM.md) | rota explícita de Beginner a Expert |
 | encontrar um assunto | [Pinakes](PINAKES.md) | índice global por domínio e conceito |
 | decidir o próximo passo | [Pharos](PHAROS.md) | rotas de continuidade conforme o objetivo |
 | aprender construindo | [Projetos](projects/README.md) | portfólio incremental, do monólito ao sistema distribuído |
@@ -55,7 +56,10 @@ flowchart LR
 
 O [Atlas](atlas/README.md) contém os roadmaps completos e define quatro níveis:
 **Fundamentos**, **Aplicação**, **Proficiência** e **Sistemas**. Avançar significa
-demonstrar capacidade, não apenas terminar leituras.
+demonstrar capacidade, não apenas terminar leituras. A
+[Matriz curricular](CURRICULUM.md) traduz esses estágios para **Beginner**,
+**Intermediate**, **Advanced** e **Expert**, registra os pré-requisitos de cada
+assunto e mostra em quais trilhas ele participa.
 
 ## Trilhas de estudo
 
@@ -155,8 +159,10 @@ específicas.
 Alexandria nasce com a arquitetura completa e Codices iniciais profundos. O
 [Roadmap](ROADMAP.md) explicita o que está consolidado, em expansão ou planejado.
 Uma página curta pode ser um índice intencional; nunca deve fingir ser um guia
-completo. Versões publicadas e mudanças compatíveis estão registradas no
-[Changelog](CHANGELOG.md).
+completo. A auditoria automática do currículo compara os guias canônicos com o
+nível e o perfil editorial declarados e publica no CI uma fila de páginas que
+ainda precisam de aprofundamento. Versões publicadas e mudanças compatíveis
+estão registradas no [Changelog](CHANGELOG.md).
 
 ## Contribuindo
 
@@ -170,4 +176,4 @@ sob [MIT](LICENSE-CODE).
 
 ---
 
-[Índice global](PINAKES.md) · [Próximo: Atlas →](atlas/README.md)
+[Matriz curricular](CURRICULUM.md) · [Índice global](PINAKES.md) · [Próximo: Atlas →](atlas/README.md)

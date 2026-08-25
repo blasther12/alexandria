@@ -84,15 +84,45 @@ arquivo:
 Se a maioria das respostas for “não”, o artigo ainda é um mapa ou uma introdução,
 não um guia consolidado.
 
+## Níveis curriculares
+
+A [Matriz curricular](CURRICULUM.md) usa quatro níveis. Eles descrevem a
+capacidade esperada ao concluir o assunto, não cargo, senioridade ou uma
+certificação automática:
+
+| Nível | Evidência esperada |
+| --- | --- |
+| Beginner | explica o mecanismo, reproduz exemplo e reconhece limites básicos |
+| Intermediate | entrega solução testada e lida com erros previsíveis |
+| Advanced | diagnostica falhas, mede trade-offs e decide sob restrições reais |
+| Expert | projeta, opera e evolui sistemas sob falhas, escala e restrições organizacionais |
+
+Todo **guia canônico** deve ter uma entrada em
+[`curriculum/catalog.json`](curriculum/catalog.json) com:
+
+- `level`: Beginner, Intermediate, Advanced ou Expert;
+- `prerequisites`: IDs de assuntos que devem vir antes;
+- `tracks`: percursos em que o tema participa;
+- `profile`: tipo de profundidade esperado (`foundation`, `concept`,
+  `implementation`, `architecture`, `operations` ou `comparison`).
+
+O auditor em `scripts/audit_curriculum.py` procura sinais de problema, modelo
+mental, mecanismo, garantias, trade-offs, falhas, performance, segurança,
+testes, observabilidade, prática e referências conforme o perfil. O resultado é
+uma **heurística editorial**, não uma nota. Não adicione palavras-chave vazias
+só para melhorar o score; corrija a lacuna conceitual indicada.
+
 ## Como adicionar um assunto
 
 1. Crie o diretório no domínio mais próximo; não replique o mesmo guia em dois
    lugares.
 2. Use `templates/topic.md` e remova apenas seções realmente inaplicáveis.
 3. Adicione o assunto ao índice do domínio e ao `PINAKES.md`.
-4. Conecte pré-requisitos e próximos estudos no Atlas ou Pharos.
-5. Inclua ao menos um exemplo verificável e um exercício prático.
-6. Adicione navegação relativa no rodapé: `← Anterior · ↑ Índice · Próximo →`.
+4. Cadastre nível, pré-requisitos, trilhas e perfil em `curriculum/catalog.json`.
+5. Regenere `CURRICULUM.md` e confirme que a matriz continua sem ciclos.
+6. Conecte próximos estudos no Atlas ou Pharos.
+7. Inclua ao menos um exemplo verificável e um exercício prático.
+8. Adicione navegação relativa no rodapé: `← Anterior · ↑ Índice · Próximo →`.
 
 Uma página de índice pode ser breve; um Codex marcado como completo não pode ser
 apenas um sumário ou lista de links.
@@ -182,11 +212,18 @@ do GitHub também precisa permitir que Actions criem pull requests.
 ## Validação local
 
 ```bash
+python3 scripts/audit_curriculum.py --check --verify-matrix CURRICULUM.md
 python3 scripts/validate_docs.py --require-navigation
 python3 scripts/validate_release.py
 python3 scripts/validate_mermaid.py
 npx --yes markdownlint-cli2 "**/*.md" "#node_modules"
 # A CI também verifica URLs externas com lychee.
+```
+
+Para gerar uma auditoria Markdown local sem alterar a matriz:
+
+```bash
+python3 scripts/audit_curriculum.py --output /tmp/alexandria-curriculum-audit.md
 ```
 
 `validate_mermaid.py` requer `mmdc` (pacote

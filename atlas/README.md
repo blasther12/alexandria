@@ -10,16 +10,21 @@ diagrama explicado, experimento ou decisão defendida com dados.
 
 ## Níveis
 
-| Nível | Evidência de domínio | Armadilha comum |
-| --- | --- | --- |
-| 1 · Fundamentos | explica mecanismo e executa exemplo isolado | confundir familiaridade com compreensão |
-| 2 · Aplicação | entrega funcionalidade testada e documentada | copiar receita sem medir resultado |
-| 3 · Proficiência | diagnostica falhas e compara alternativas | otimizar sem requisito explícito |
-| 4 · Sistemas | projeta, opera e evolui sob restrições reais | tratar operação como etapa posterior |
+| Estágio do Atlas | Nível curricular | Evidência de domínio | Armadilha comum |
+| --- | --- | --- | --- |
+| 1 · Fundamentos | Beginner | explica mecanismo e executa exemplo isolado | confundir familiaridade com compreensão |
+| 2 · Aplicação | Intermediate | entrega funcionalidade testada e documentada | copiar receita sem medir resultado |
+| 3 · Proficiência | Advanced | diagnostica falhas e compara alternativas | otimizar sem requisito explícito |
+| 4 · Sistemas | Expert | projeta, opera e evolui sob restrições reais | tratar operação como etapa posterior |
 
-O [contrato dos exercícios](../exercises/README.md) define critérios para os
-quatro níveis. O [Pharos](../PHAROS.md) ajuda a decidir quando aprofundar,
-avançar ou voltar a um fundamento.
+A [Matriz curricular](../CURRICULUM.md) registra o nível e os pré-requisitos de
+cada assunto canônico. O [contrato dos exercícios](../exercises/README.md)
+define critérios de prática para os quatro níveis. O [Pharos](../PHAROS.md)
+ajuda a decidir quando aprofundar, avançar ou voltar a um fundamento.
+
+`Expert` descreve a exigência do estágio e do material, não uma certificação de
+senioridade. A evidência precisa vir de projeto, diagnóstico, operação e revisão
+de decisões, não apenas de leitura.
 
 ## Como uma trilha funciona
 
@@ -95,7 +100,8 @@ produção, incidentes e revisão de decisões não é comprimível por calendá
 
 1. Escolha a trilha que corresponde ao tipo de problema que quer resolver.
 2. Faça o diagnóstico de entrada e marque lacunas concretas.
-3. Comece no primeiro marco que ainda não consegue demonstrar.
+3. Consulte a [Matriz curricular](../CURRICULUM.md) e resolva os pré-requisitos do
+   primeiro marco que ainda não consegue demonstrar.
 4. Consulte Codices e Library sob demanda, não em leitura linear obrigatória.
 5. Use os [projetos progressivos](../projects/README.md) como laboratório comum.
 6. Use [entrevistas](../interview/README.md) para testar explicação e trade-offs.

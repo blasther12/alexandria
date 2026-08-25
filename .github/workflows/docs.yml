@@ -61,6 +61,7 @@ jobs:
       - name: Compile documentation validators
         run: >-
           python3 -m py_compile
+          scripts/audit_curriculum.py
           scripts/markdown_fences.py
           scripts/validate_docs.py
           scripts/validate_mermaid.py
@@ -71,6 +72,12 @@ jobs:
 
       - name: Validate structure and relative links
         run: python3 scripts/validate_docs.py --require-navigation
+
+      - name: Audit curriculum graph and depth
+        run: >-
+          python3 scripts/audit_curriculum.py
+          --check
+          --verify-matrix CURRICULUM.md
 
       - name: Lint Markdown
         uses: DavidAnson/markdownlint-cli2-action@21c1be1b93ad9ed58fa840aacc3f279cde2a72ff  # v24.2.0

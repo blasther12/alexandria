@@ -116,7 +116,10 @@ jobs:
         run: npm config set allow-scripts=puppeteer --location=user
 
       - name: Install Mermaid CLI
-        run: npm install --global @mermaid-js/mermaid-cli@11.16.0
+        run: npm install --global @mermaid-js/mermaid-cli@11.16.0 puppeteer@25.8.0
+
+      - name: Install browser for Mermaid CLI
+        run: npx --yes puppeteer@25.8.0 browsers install chrome-headless-shell
 
       - name: Render every diagram
         run: python3 scripts/validate_mermaid.py

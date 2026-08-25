@@ -381,7 +381,7 @@ banco e outra que preserva degradação controlada. Registre as fitness function
   explica padrões de objetos e API.
 - Kubernetes SIG Architecture. [Architecture](https://github.com/kubernetes/community/tree/master/sig-architecture)
   reúne decisões e princípios de design.
-- CNCF. [Cloud Native Security Whitepaper](https://github.com/cncf/tag-security/tree/main/security-whitepaper)
+- CNCF. [Cloud Native Security Whitepaper](https://github.com/cncf/tag-security/blob/main/community/resources/security-whitepaper/v2/cloud-native-security-whitepaper.md)
   conecta plataforma, workload e supply chain.
 
 ---

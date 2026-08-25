@@ -242,4 +242,4 @@ licencia conteúdo e código nos termos descritos em [Licenciamento](LICENSES.md
 
 ---
 
-[← Início](README.md) · [Matriz curricular](CURRICULUM.md) · [Roadmap →](ROADMAP.md)
+[← Início](README.md) · [↑ Início](README.md) · [Roadmap →](ROADMAP.md)

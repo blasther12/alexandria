@@ -1,6 +1,29 @@
 # Arquitetura orientada a eventos
 
-Um evento registra algo relevante que **já aconteceu**. Produtores publicam fatos; consumidores decidem suas reações. Isso desacopla tempo e fan-out, mas troca o raciocínio de chamada/resposta por entrega, ordem, duplicidade, schema, atraso e reconstrução.
+Arquitetura orientada a eventos resolve um problema recorrente: permitir que uma
+capacidade anuncie um fato e outras capacidades reajam **sem exigir que todas
+estejam disponíveis, conhecidas e sincronizadas naquele instante**. Esse
+benefício cobra um preço: o fluxo deixa de ser uma pilha síncrona fácil de seguir
+e passa a depender de entrega, ordem, duplicidade, schema, atraso, replay e
+reconciliação.
+
+Um evento registra algo relevante que **já aconteceu**. Produtores publicam
+fatos; consumidores decidem suas reações. Se a mensagem pede que um destinatário
+faça algo, ela é mais próxima de comando assíncrono que de evento de domínio.
+
+## Modelo mental: fatos propagam estado no tempo
+
+Em chamada síncrona, o caller espera uma resposta agora. Em evento, o produtor
+confirma apenas o que controla e publica uma evidência durável para o restante do
+sistema reagir depois.
+
+```text
+transação local → fato durável → publicação → entrega → efeitos locais → convergência
+```
+
+A consequência principal é que o sistema pode ficar em estados intermediários.
+Isso não é necessariamente erro. O design precisa dizer **quais estados são
+aceitáveis, por quanto tempo e como detectamos quando a convergência parou**.
 
 ## Primeiro: qual forma de “evento”?
 
@@ -11,9 +34,35 @@ Um evento registra algo relevante que **já aconteceu**. Produtores publicam fat
 | Streaming | sequência particionada e reprocessável | consumidores calculam continuamente | analytics, integrações, materializações |
 | Comando assíncrono | pedido dirigido a um dono | remetente conhece intenção/receptor lógico | trabalho demorado ou amortecido |
 
-Não nomeie comando no passado (`CreateInvoiceRequested` não é fato concluído). Eventos usam linguagem de domínio e não presumem consumidor: `OrderPlaced`, não `SendEmail`.
+Não nomeie comando no passado (`CreateInvoiceRequested` não é fato concluído).
+Eventos usam linguagem de domínio e não presumem consumidor: `OrderPlaced`, não
+`SendEmail`.
 
-## Componentes e fluxo confiável
+## Evento de domínio versus evento de integração
+
+Um evento de domínio expressa algo relevante dentro do modelo. Um evento de
+integração é o contrato publicado para outras fronteiras. Eles podem coincidir,
+mas não precisam.
+
+Separar os dois permite:
+
+- manter detalhes internos fora do contrato público;
+- traduzir nomes e payloads;
+- remover PII desnecessária;
+- manter compatibilidade enquanto o domínio interno evolui.
+
+Publicar diretamente toda alteração de entidade transforma o modelo interno em
+API distribuída e aumenta acoplamento.
+
+## Fluxo confiável com outbox
+
+O problema clássico é o dual write:
+
+1. aplicação grava pedido no banco;
+2. tenta publicar evento;
+3. processo cai entre as duas operações.
+
+O estado existe, mas o evento foi perdido.
 
 ```mermaid
 sequenceDiagram
@@ -33,7 +82,27 @@ sequenceDiagram
     Inbox-->>Broker: ack após commit
 ```
 
-Outbox fecha a lacuna “gravei estado, falhei antes de publicar”. Ela normalmente oferece **at-least-once**; consumidores ainda precisam idempotência. Inbox registra `event_id` junto do efeito local. Efeitos externos exigem chave idempotente do provedor ou reconciliação.
+Outbox fecha a lacuna “gravei estado, falhei antes de publicar”. Ela normalmente
+oferece **at-least-once**. O relay pode publicar e cair antes de marcar o item
+como enviado. Consumidores ainda precisam idempotência.
+
+Inbox registra `event_id` junto do efeito local. Efeitos externos, como email ou
+pagamento, exigem chave idempotente do provedor ou reconciliação.
+
+## Garantias: declare a fronteira
+
+Antes de implementar, documente:
+
+- delivery: at-most-once ou at-least-once?
+- ordering: global, por partição, por aggregate ou nenhuma?
+- retenção: por quanto tempo replay é possível?
+- durability: quando o broker considera uma mensagem confirmada?
+- freshness: qual atraso máximo é aceitável?
+- schema compatibility: quais versões convivem?
+
+“Exactly once” precisa sempre completar a frase: exatamente uma vez **onde**?
+Um broker pode evitar duplicidade dentro de sua transação, mas não controla um
+email, webhook ou API externa fora da fronteira.
 
 ## Contrato de evento
 
@@ -46,72 +115,322 @@ Envelope mínimo, sem colocar todo o domínio:
   "occurred_at": "2026-08-21T13:30:00Z",
   "producer": "orders",
   "correlation_id": "...",
+  "causation_id": "...",
   "aggregate_id": "order-123",
   "aggregate_version": 7,
-  "data": { "order_id": "order-123", "total_cents": 2590, "currency": "BRL" }
+  "data": {
+    "order_id": "order-123",
+    "total_cents": 2590,
+    "currency": "BRL"
+  }
 }
 ```
 
-Defina tipos, unidade, nulabilidade, significado, classificação de dados, chave de partição e compatibilidade. Schema Registry valida forma; revisão semântica ainda é humana. Prefira evolução aditiva, defaults significativos e eventos novos para mudança semântica.
+Defina tipos, unidade, nulabilidade, significado, classificação de dados, chave
+de partição e compatibilidade. Schema Registry valida forma; revisão semântica
+ainda é humana.
 
-## Ordenação, particionamento e tempo
+## Evolução de schema
 
-Ordem global costuma custar escala e disponibilidade. Particione por agregado quando apenas a ordem do pedido importa. `aggregate_version` detecta lacuna/fora de ordem. Horário de ocorrência e horário de processamento são diferentes; relógios distribuídos não estabelecem causalidade total.
+Prefira mudanças aditivas. Adicionar campo opcional costuma ser mais simples que
+renomear ou mudar significado.
 
-Consumidores devem decidir: bufferizar uma lacuna, consultar fonte, reprocessar, ou rejeitar. Documente o comportamento em vez de assumir ordenação do broker.
+Estratégias:
 
-## Entrega, retries e backpressure
+- consumidor ignora campo desconhecido;
+- produtor mantém campo antigo durante transição;
+- novo evento quando a semântica realmente muda;
+- upcaster/adapter em fronteira controlada;
+- contratos versionados com janela explícita de compatibilidade.
 
-- confirme (ack) apenas após efeito durável;
-- retry com backoff, jitter e limite; preserve erro/classificação;
-- mensagens inválidas não melhoram com retry: quarentena/DLQ + ferramenta de inspeção e redrive;
-- limite concorrência e faça pause quando dependências saturam;
-- monitore lag em **tempo e quantidade**, idade da mensagem mais antiga e taxa de redelivery;
-- retenção deve cobrir pior indisponibilidade e replay planejado.
+O maior risco não é JSON inválido. É campo com o mesmo nome e significado novo.
+Compatibilidade sintática não garante compatibilidade semântica.
 
-DLQ não é lixeira: precisa owner, alerta, dado seguro, procedimento de correção/redrive e prevenção de ordem inválida.
+## Ordenação e particionamento
 
-## Vantagens, desvantagens e decisão
+Ordem global custa escala e disponibilidade. Pergunte qual entidade realmente
+precisa de ordem.
 
-| Vantagem | Custo / risco |
-| --- | --- |
-| desacoplamento temporal e fan-out | consistência eventual e fluxo implícito |
-| absorção de picos | lag, backpressure e capacidade de retenção |
-| consumidores evoluem separadamente | contratos e semântica precisam governança |
-| replay/auditoria quando log é retido | efeitos duplicados e reprocessamento perigoso |
+Para pedido, particionar por `order_id` permite preservar ordem local enquanto
+pedidos diferentes processam em paralelo.
 
-**Use quando:** reações podem ser assíncronas; vários consumidores independentes; picos precisam buffer; histórico/replay tem valor.
+`aggregate_version` ajuda a detectar:
 
-**Não use quando:** usuário precisa confirmação forte imediata; fluxo é curto e síncrono; equipe não opera broker, schemas e incidentes; “desacoplamento” apenas esconde dependência obrigatória.
+- lacuna;
+- duplicidade;
+- mensagem fora de ordem.
+
+O consumidor precisa decidir o que faz diante da lacuna: bufferiza, consulta a
+fonte, reprocessa ou rejeita. Não dependa de “o broker deve entregar certo” sem
+documentar a garantia.
+
+## Tempo de evento e tempo de processamento
+
+`occurred_at` representa quando o fato ocorreu. O consumidor pode processá-lo
+segundos ou horas depois.
+
+Em analytics e streaming, isso muda janelas e agregações. Um evento atrasado pode
+pertencer a uma janela já fechada. Watermarks e políticas de lateness tornam essa
+decisão explícita.
+
+Relógio físico não estabelece causalidade total entre serviços. Correlation e
+causation IDs ajudam a reconstruir relação lógica.
+
+## Idempotência do consumidor
+
+Um consumer correto sob at-least-once precisa tolerar redelivery.
+
+Opções:
+
+- inbox com `event_id` único;
+- conditional update por version;
+- operação naturalmente idempotente;
+- chave idempotente no downstream;
+- recomputar projeção a partir de fonte durável.
+
+Deduplicação em memória não basta se o processo reinicia.
+
+## Retry e poison messages
+
+Erros transitórios podem receber retry com backoff e jitter. Erros permanentes,
+como schema inválido, não melhoram com 10 mil tentativas.
+
+Classifique:
+
+- transient dependency failure;
+- rate limit;
+- timeout ambíguo;
+- payload inválido;
+- versão desconhecida;
+- violação de regra local.
+
+DLQ/quarentena precisa de owner, alerta, ferramenta de inspeção, retenção e
+procedimento seguro de redrive. Ela não é cemitério.
+
+## Backpressure e overload
+
+Broker absorve picos, não cria capacidade infinita. Se chegada permanece maior
+que processamento, lag cresce.
+
+Meça:
+
+- producer rate;
+- consumer rate;
+- lag em quantidade;
+- **idade da mensagem mais antiga**;
+- queue depth;
+- retry rate;
+- DLQ rate;
+- saturation de dependências.
+
+Autoscaling baseado apenas em número de mensagens pode reagir mal a mensagens com
+custos muito diferentes. Tempo por item e idade ajudam a modelar capacidade.
+
+## Replay
+
+Replay é um dos maiores benefícios e também um dos maiores riscos.
+
+Antes de reprocessar:
+
+1. defina range/offset;
+2. garanta idempotência;
+3. bloqueie efeitos externos não repetíveis;
+4. limite taxa para não derrubar dependências;
+5. monitore progresso;
+6. mantenha forma de interromper;
+7. reconcilie estado final.
+
+Replay em produção que envia novamente emails ou cobranças é um anti-pattern
+operacional grave.
+
+## Coreografia versus orquestração
+
+Em coreografia, cada consumidor reage a eventos e publica próximos fatos. O fluxo
+emerge da composição.
+
+Vantagens:
+
+- autonomia;
+- menos coordenador central;
+- extensibilidade por novos consumidores.
+
+Custos:
+
+- estado global difícil de visualizar;
+- timeouts/compensações espalhados;
+- debugging de jornada complexo.
+
+Orquestração mantém um estado explícito do workflow. Introduz um coordenador, mas
+torna progresso, retry e compensação mais visíveis.
+
+Fluxos longos precisam de visão de estado independentemente do estilo.
+
+## Consistência eventual e UX
+
+Se uma projeção atrasa, o usuário pode:
+
+- ver estado “processando”;
+- receber representação retornada pelo comando;
+- fazer read-your-writes em fonte mais forte;
+- esperar versão mínima;
+- aceitar dado stale com indicador.
+
+A UX precisa participar da arquitetura. “Eventual” não é permissão para estado
+inexplicável.
+
+## Performance e capacidade
+
+Dimensione o sistema a partir do fluxo:
+
+- eventos por segundo;
+- tamanho médio e p99 de payload;
+- partitions/shards;
+- tempo de processamento;
+- retenção;
+- replay worst-case;
+- crescimento de storage;
+- fan-out por evento.
+
+Se cada evento dispara cinco consumidores e cada consumer faz três calls, o custo
+real é muito maior que a taxa do producer.
+
+## Observabilidade
+
+Propague `traceparent` quando fizer sentido, mas não suponha que uma única trace
+sobrevive a retenção longa. Use também correlation e causation IDs.
+
+Métricas:
+
+- publish rate/error/latency;
+- ack latency;
+- consumer rate/error;
+- lag e idade;
+- redelivery;
+- retry;
+- DLQ;
+- tamanho de payload;
+- tempo evento → efeito de negócio.
+
+Um dashboard por jornada é mais útil que apenas dashboards por broker.
+
+## Segurança e privacidade
+
+Eventos atravessam mais sistemas que uma chamada síncrona direta. Minimize dados.
+
+Controles:
+
+- autenticação de produtores/consumidores;
+- autorização por topic/stream;
+- criptografia;
+- schema policy;
+- retenção proporcional;
+- auditoria;
+- segregação por tenant;
+- prevenção de PII desnecessária.
+
+Eventos imutáveis podem conflitar com obrigações de exclusão. Estratégias incluem
+referência indireta, tokenização, destruição de chave e eventos redigidos, sempre
+conforme requisitos jurídicos e de dados.
+
+## Modos de falha
+
+### Producer commitou, relay parou
+
+Outbox cresce. Estado de negócio existe, efeitos assíncronos atrasam. Monitore
+idade da outbox e reinicie/repare relay sem perder idempotência.
+
+### Consumer faz efeito e cai antes do ack
+
+Mensagem reaparece. Inbox/idempotency precisa impedir duplicação.
+
+### Uma partition fica quente
+
+Lag concentra em uma chave. Investigue partition key e workload. Adicionar
+consumers não ajuda quando ordering exige uma única partition.
+
+### Schema novo quebra consumer antigo
+
+Pause rollout, restaure compatibilidade, reprocese mensagens incompatíveis em
+quarentena e melhore contract tests.
+
+### Broker volta após outage
+
+Consumers podem criar thundering herd e sobrecarregar banco. Faça ramp-up e
+limite concorrência.
 
 ## Testes
 
 - serializer/schema e compatibilidade no CI;
 - produtor prova que publica o fato correto após commit;
-- consumidor prova idempotência, fora de ordem e versão desconhecida;
-- integração com broker real para ack, retry e rebalance;
-- replay em ambiente isolado com efeitos externos bloqueados;
-- caos: matar entre efeito e ack, indisponibilizar dependência, saturar partição.
+- consumer prova idempotência;
+- duplicidade e fora de ordem;
+- versão desconhecida;
+- integração com broker real para ack/retry/rebalance;
+- replay em ambiente isolado;
+- fault injection entre efeito e ack;
+- saturation de dependency;
+- recovery após backlog grande.
 
-## Observabilidade e segurança
+## Laboratório progressivo
 
-Propague `traceparent`, mas não confie que uma única trace sobreviva a retenção longa; use correlation/causation IDs. Métricas: publish rate/error, consumer rate/error, lag/idade, retries, DLQ, tamanho de payload e tempo até efeito de negócio.
+### Beginner
 
-Autentique produtores/consumidores, autorize por tópico, criptografe transporte/repouso, minimize PII e defina retenção/eliminação. Eventos imutáveis conflitam com direito de exclusão: armazene referência/tokenização, criptografia com destruição de chave ou eventos redigidos conforme a obrigação—com revisão jurídica.
+Implemente producer e consumer simples. Duplique manualmente um evento e observe o
+efeito incorreto antes de adicionar idempotência.
 
-## Evolução e migração
+### Intermediate
 
-Para introduzir eventos em sistema existente: use outbox + CDC/relay, publique sombra, compare projeção com fonte, habilite consumidores por etapa e só então remova leitura antiga. Rebuilds usam uma nova versão de projeção em paralelo; troque alias após reconciliar contagens, checksums e invariantes.
+Adicione outbox e inbox. Mate producer depois do commit e consumer depois do
+efeito. Prove que não há perda nem duplicação do efeito lógico.
+
+### Advanced
+
+Particione por aggregate. Injete mensagem fora de ordem e uma lacuna. Implemente
+política explícita para cada caso e monitore lag em tempo.
+
+### Expert
+
+Crie backlog grande, derrube dependência, recupere broker e execute replay. Use
+rate limit, autoscaling, DLQ, dashboards e runbook. Meça quanto tempo o sistema
+leva para voltar ao SLO sem provocar nova cascata.
+
+## Projeto de síntese
+
+Modele `OrderPlaced → PaymentAuthorized → OrderConfirmed → FulfillmentRequested`.
+
+Requisitos:
+
+1. estado + outbox atômicos;
+2. schemas versionados;
+3. consumers idempotentes;
+4. order por `order_id`;
+5. saga com timeout/compensação;
+6. DLQ operável;
+7. replay seguro;
+8. SLO de tempo evento → efeito;
+9. canary de nova versão de consumer;
+10. ADR justificando onde **não** usar evento.
+
+## Quando usar e quando evitar
+
+**Use quando:** reações podem ser assíncronas; vários consumidores independentes;
+picos precisam buffer; histórico/replay tem valor; autonomy compensa operação.
+
+**Evite quando:** usuário precisa confirmação forte imediata; fluxo é curto e
+síncrono; equipe não opera broker/schemas; consistência eventual viola a
+invariante; “desacoplamento” apenas esconde dependência obrigatória.
 
 ## Anti-patterns
 
-- **dual write:** gravar banco e broker separadamente;
-- evento genérico `EntityUpdated` com payload opaco;
-- tópico compartilhado sem dono e sem schema;
-- consumidor não idempotente sob “exactly once” do broker;
-- coreografia longa sem visão de estado, timeout e compensação;
-- evento consultando o produtor para quase todo dado (acoplamento temporal reaparece);
-- replay em produção disparando emails/cobranças novamente.
+- dual write banco + broker;
+- evento `EntityUpdated` opaco;
+- tópico sem owner;
+- consumidor não idempotente confiando em “exactly once”;
+- coreografia longa sem estado visível;
+- evento consultando produtor para quase todo dado;
+- replay com efeitos externos ativos;
+- payload contendo PII “porque pode ser útil depois”;
+- dezenas de microeventos técnicos para uma única mudança de domínio.
 
 ## Referências
 

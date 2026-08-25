@@ -8,6 +8,17 @@ Um checkout calcula frete por retirada, transportadora padrão ou expressa. Se t
 
 Definir uma família de algoritmos atrás de um contrato, testar cada política independentemente e deixar o limite de composição selecionar uma. Strategy serve quando o algoritmo varia; não justifica envolver todo cálculo em classe.
 
+## Modelo mental
+
+Strategy separa **a decisão de qual algoritmo usar** da **execução do algoritmo**. O consumidor conhece o contrato, não a lista de variantes.
+
+Isso cria duas responsabilidades diferentes:
+
+1. **selection policy:** escolhe `Pickup`, `Standard` ou `Express` a partir de tenant, plano, request ou configuração;
+2. **strategy:** calcula o resultado obedecendo ao mesmo contrato sem saber por que foi escolhida.
+
+Misturar as duas recria o `switch` original dentro de uma abstração nova.
+
 ## Estrutura
 
 ```mermaid
@@ -23,7 +34,22 @@ classDiagram
     ShippingCost <|.. Express
 ```
 
-A parte estável é o contrato de input/output; a variável é a política. Seleção pertence ao composition root (configuração, mapping da request ou DI), não escondida no consumidor.
+A parte estável é o contrato de input/output; a variável é a política. Seleção pertence ao composition root, como configuração, mapping da request ou DI, não escondida no consumidor.
+
+## Garantias e limites
+
+Strategy garante desacoplamento **somente se as variantes realmente compartilham semântica**. Se uma estratégia retorna centavos localmente e outra retorna uma Promise que pode falhar depois de chamar rede, o contrato não é equivalente.
+
+Um contrato saudável define:
+
+- unidade e tipo do resultado;
+- erros possíveis;
+- sync/async;
+- timeout/cancelamento quando há I/O;
+- efeitos colaterais permitidos;
+- invariantes comuns.
+
+Strategy não garante que novas variantes sejam seguras, rápidas ou corretas. Isso precisa de contract tests e observabilidade.
 
 ## Quando usar
 
@@ -99,13 +125,9 @@ function checkout(subtotalCents, parcel, shippingCost) {
   }
   return subtotalCents + shippingCost(parcel);
 }
-
-console.assert(
-  checkout(10_000, { weightGrams: 750 }, standard) === 12_000,
-);
 ```
 
-Para carrier externo, feche sobre client explícito: `const express = client => async parcel => ...`. O contrato passa a ser assíncrono para **todas** as strategies; não misture número e promise.
+Para carrier externo, feche sobre client explícito. O contrato passa a ser assíncrono para **todas** as strategies; não misture número e promise.
 
 ## TypeScript
 
@@ -122,19 +144,6 @@ const pickup: ShippingCost = { quote: () => 0 };
 const standard: ShippingCost = {
   quote: ({ weightGrams }) => 500 + 2 * weightGrams,
 };
-
-function checkout(
-  subtotalCents: number,
-  parcel: Parcel,
-  shipping: ShippingCost,
-): number {
-  if (!Number.isSafeInteger(subtotalCents) || parcel.weightGrams <= 0) {
-    throw new RangeError("invalid checkout input");
-  }
-  return subtotalCents + shipping.quote(parcel);
-}
-
-checkout(10_000, { weightGrams: 750 }, standard); // 12000
 ```
 
 Evite union de nomes concretos dentro de `checkout`; isso recria o conditional que a abstração removeu.
@@ -144,32 +153,10 @@ Evite union de nomes concretos dentro de `checkout`; isso recria o conditional q
 Go aceita interface e function adapter, mantendo variants simples compactas.
 
 ```go
-package shipping
-
-import "fmt"
-
 type Parcel struct{ WeightGrams int }
 
 type Cost interface {
-	Quote(Parcel) (int, error)
-}
-
-type CostFunc func(Parcel) (int, error)
-
-func (f CostFunc) Quote(p Parcel) (int, error) { return f(p) }
-
-var Pickup Cost = CostFunc(func(Parcel) (int, error) { return 0, nil })
-var Standard Cost = CostFunc(func(p Parcel) (int, error) {
-	if p.WeightGrams <= 0 {
-		return 0, fmt.Errorf("weight must be positive")
-	}
-	return 500 + 2*p.WeightGrams, nil
-})
-
-func Checkout(subtotal int, p Parcel, cost Cost) (int, error) {
-	shipping, err := cost.Quote(p)
-	if err != nil { return 0, fmt.Errorf("quote shipping: %w", err) }
-	return subtotal + shipping, nil
+    Quote(Parcel) (int, error)
 }
 ```
 
@@ -180,31 +167,68 @@ Defina interfaces perto do consumidor. Se a strategy remota precisa cancelamento
 `fun interface` torna políticas nomeadas e lambdas interoperáveis.
 
 ```kotlin
-data class Parcel(val weightGrams: Int)
-
 fun interface ShippingCost {
     fun quote(parcel: Parcel): Int
 }
-
-val pickup = ShippingCost { 0 }
-val standard = ShippingCost { parcel ->
-    require(parcel.weightGrams > 0) { "weight must be positive" }
-    500 + 2 * parcel.weightGrams
-}
-
-fun checkout(
-    subtotalCents: Int,
-    parcel: Parcel,
-    shipping: ShippingCost,
-): Int {
-    require(subtotalCents >= 0)
-    return Math.addExact(subtotalCents, shipping.quote(parcel))
-}
-
-check(checkout(10_000, Parcel(750), standard) == 12_000)
 ```
 
 Para política remota suspending, declare `suspend fun quote(...)`; não bloqueie dentro de strategy síncrona.
+
+## Performance
+
+Strategy costuma ter overhead estrutural pequeno quando variantes são funções ou objetos stateless. O problema aparece quando a abstração esconde custos muito diferentes.
+
+Exemplo: `Pickup` retorna imediatamente, mas `Express` chama uma API externa. O consumidor que assume latência uniforme pode definir timeout inadequado ou executar milhares de chamadas concorrentes.
+
+Para strategies com I/O, observe:
+
+- p50/p95/p99 por variante;
+- error/timeout rate;
+- cache hit;
+- concorrência e pool;
+- custo por chamada;
+- fallback usado.
+
+Se o selection policy escolhe variante por tenant, métricas devem carregar `strategy` como atributo de baixa cardinalidade. Assim uma regressão na transportadora expressa não parece uma regressão geral do checkout.
+
+Evite instanciar strategies pesadas por request se são stateless. Compartilhe clients/pools seguros e mantenha estado de request fora de singletons.
+
+## Segurança
+
+Strategy também pode representar políticas sensíveis, como antifraude, autorização ou roteamento para provedores. Nesse caso, **seleção é uma boundary de segurança**.
+
+Riscos:
+
+- usuário controla diretamente o nome da strategy e escolhe uma variante menos restritiva;
+- configuração de tenant aponta para implementação errada;
+- plugin/strategy de terceiro executa com privilégios excessivos;
+- fallback silencioso pula validação importante;
+- logs registram payload sensível para “comparar estratégias”.
+
+Controles:
+
+- allowlist de variantes no composition root;
+- validação de configuração no startup;
+- autorização antes da seleção quando a variante depende de plano/tenant;
+- least privilege para clients externos;
+- fallback que preserva segurança ou falha fechado quando necessário;
+- audit log para mudanças de estratégia sensíveis.
+
+Nunca trate `strategyName` vindo da request como nome de classe a instanciar dinamicamente sem mapeamento controlado.
+
+## Falhas e fallback
+
+Fallback é outra decisão de negócio, não comportamento automático do pattern.
+
+Se `Express` falha, retornar preço de `Standard` pode ser aceitável para cotação, mas incorreto se o usuário já escolheu entrega expressa. Em pagamentos, trocar provider silenciosamente pode duplicar autorização.
+
+Defina por caso:
+
+- erro terminal versus transitório;
+- retry budget;
+- se existe fallback semanticamente equivalente;
+- como o usuário percebe degradação;
+- se resultado precisa de provenance da strategy usada.
 
 ## Testando a fronteira
 
@@ -212,11 +236,38 @@ Teste cada política por exemplos e invariantes, depois uma colaboração de `Ch
 
 - frete nunca retorna valor negativo;
 - pacote mais pesado não fica mais barato na mesma faixa, salvo regra explícita;
-- limites (999/1000 g) são cobertos;
+- limites, como 999/1000 g, são cobertos;
 - erro do carrier preserva retryability e não cobra pedido;
-- configuração mapeia todo modo suportado para uma política.
+- configuração mapeia todo modo suportado para uma política;
+- selection policy não permite variante não autorizada;
+- contract test roda sobre todas as strategies com os mesmos casos comuns.
 
-Contract tests ajudam quando strategies chamam providers diferentes e prometem a mesma semântica.
+## Observabilidade
+
+Instrumente a boundary de Strategy, não cada algoritmo de forma incompatível. Registre nome da estratégia, duração, resultado e classe de erro. Para remote strategies, crie child span do provider.
+
+Uma métrica agregada como `shipping_quote_duration{strategy="express"}` permite comparar variantes e detectar quando uma implementação deixa de cumprir o contrato operacional.
+
+## Laboratório
+
+Implemente três strategies de frete:
+
+1. `Pickup` local;
+2. `Standard` usando tabela em memória;
+3. `Express` chamando um fake HTTP com latência/erro configurável.
+
+Depois:
+
+- selecione por configuração allowlisted;
+- transforme todo contrato em async porque uma variante faz I/O;
+- defina timeout e typed errors;
+- rode contract tests sobre as três;
+- injete falha no carrier e implemente fallback somente onde semanticamente permitido;
+- compare p99 das variantes;
+- tente selecionar uma strategy não autorizada e confirme rejeição;
+- registre qual strategy produziu a cotação final.
+
+O exercício termina quando você consegue explicar se Strategy simplificou o domínio ou apenas deslocou um `switch`.
 
 ## Anti-patterns relacionados
 
@@ -225,6 +276,7 @@ Contract tests ajudam quando strategies chamam providers diferentes e prometem a
 - **Strategy mutável compartilhada:** dado de request em Singleton causa race.
 - **Seletor escondido:** “strategy” contém o `switch` original.
 - **Interface inflada:** métodos opcionais que poucos algoritmos implementam.
+- **Fallback inseguro:** troca de variante altera garantia sem informar caller.
 
 ## Alternativas modernas
 

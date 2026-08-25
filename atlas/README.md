@@ -120,4 +120,4 @@ produção, incidentes e revisão de decisões não é comprimível por calendá
 
 ---
 
-[← Início](../README.md) · [Matriz curricular](../CURRICULUM.md) · [Backend →](backend-engineer.md)
+[← Início](../README.md) · [↑ Atlas](README.md) · [Backend →](backend-engineer.md)

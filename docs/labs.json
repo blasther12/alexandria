@@ -1,0 +1,10 @@
+{
+  "labs": [
+    {"id":"postgres-write-skew","title":"PostgreSQL · Write Skew","theme":"dados","summary":"Reproduza uma anomalia de concorrência e compare Repeatable Read com Serializable.","href":"https://github.com/blasther12/alexandria/tree/main/labs/postgres-write-skew"},
+    {"id":"kafka-idempotency","title":"Kafka · Redelivery e Idempotência","theme":"mensageria","summary":"Mate o consumer entre efeito e commit do offset, observe redelivery e proteja o efeito com deduplicação.","href":"https://github.com/blasther12/alexandria/tree/main/labs/kafka-idempotency"},
+    {"id":"kubernetes-probes","title":"Kubernetes · Probes e Rollout","theme":"infra-cloud","summary":"Transforme uma liveness mal desenhada em restart storm e corrija readiness/startup/liveness.","href":"https://github.com/blasther12/alexandria/tree/main/labs/kubernetes-probes"},
+    {"id":"otel-pipeline","title":"OpenTelemetry · Pipeline ponta a ponta","theme":"observabilidade","summary":"Quebre SDK, OTLP, Collector, processors e exporter em etapas para localizar exatamente onde o trace desaparece.","href":"https://github.com/blasther12/alexandria/tree/main/labs/otel-pipeline"},
+    {"id":"rag-eval","title":"RAG · Retrieval antes da geração","theme":"ai-engineering","summary":"Meça recall de retrieval antes de avaliar geração e compare dense, híbrido e reranking.","href":"https://github.com/blasther12/alexandria/tree/main/labs/rag-eval"},
+    {"id":"agent-circuit-breaker","title":"Agentes · Budget e Circuit Breaker","theme":"agentes","summary":"Force falhas repetidas, detecte ausência de progresso e interrompa o loop com estado auditável.","href":"https://github.com/blasther12/alexandria/tree/main/labs/agent-circuit-breaker"}
+  ]
+}

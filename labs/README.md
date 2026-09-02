@@ -34,3 +34,7 @@ labs/<tema>/<lab>/
 ```
 
 A ausência de código é aceitável quando o experimento pode ser reproduzido apenas com SQL, `kubectl`, `curl` ou scripts pequenos. O importante é que a evidência seja clara e repetível.
+
+---
+
+[↑ Voltar ao início do Alexandria](../README.md)

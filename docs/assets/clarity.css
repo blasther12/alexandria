@@ -1,0 +1,269 @@
+/* Reading-first layer: reduce visual noise and teach before asking for mastery. */
+
+.topic-toggle,
+.topic-detail {
+  display: none !important;
+}
+
+.topic-row {
+  grid-template-columns: auto minmax(0, 1fr) auto !important;
+  align-items: center !important;
+  padding: 15px 16px !important;
+}
+
+.chapter-link {
+  grid-column: auto !important;
+  justify-self: end !important;
+  margin: 0 !important;
+  padding: 8px 11px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--paper);
+  color: var(--ink) !important;
+  text-decoration: none !important;
+  white-space: nowrap;
+}
+
+.chapter-link:hover {
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--line));
+  background: color-mix(in srgb, var(--accent) 7%, var(--paper));
+}
+
+.reading-mode .chapter-layout {
+  grid-template-columns: minmax(0, 760px) 280px;
+  justify-content: center;
+  gap: 32px;
+}
+
+.reading-mode .chapter-hero {
+  max-width: 760px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.reading-mode .chapter-hero h1 {
+  max-width: 760px;
+}
+
+.clarity-lesson {
+  max-width: 760px;
+}
+
+.clarity-section {
+  padding: 30px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.clarity-section:first-child {
+  padding-top: 8px;
+}
+
+.clarity-section h2 {
+  margin: 7px 0 14px;
+  font-size: clamp(27px, 4vw, 36px);
+  line-height: 1.08;
+}
+
+.clarity-section p,
+.clarity-section li,
+.clarity-details li {
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.75;
+}
+
+.clarity-intro {
+  color: var(--ink) !important;
+  font-size: 18px !important;
+  line-height: 1.75 !important;
+}
+
+.clarity-section ul,
+.clarity-details ul {
+  margin: 14px 0 0;
+  padding-left: 22px;
+}
+
+.clarity-section li + li,
+.clarity-details li + li {
+  margin-top: 9px;
+}
+
+.clarity-section li::marker,
+.clarity-details li::marker {
+  color: var(--accent);
+}
+
+.clarity-example,
+.clarity-practice {
+  margin: 26px 0;
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--paper-2);
+}
+
+.clarity-example {
+  border-left: 4px solid var(--accent);
+}
+
+.clarity-practice {
+  border-left: 4px solid var(--accent-2);
+}
+
+.clarity-code {
+  overflow: auto;
+  margin: 20px 0 0;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--dark);
+  color: #f3efe5;
+  font: 13px/1.65 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  white-space: pre;
+}
+
+.clarity-details {
+  margin: 26px 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--paper);
+}
+
+.clarity-details summary {
+  cursor: pointer;
+  padding: 17px 18px;
+  font-weight: 850;
+}
+
+.clarity-details-body {
+  padding: 0 18px 18px;
+  border-top: 1px solid var(--line);
+}
+
+.chapter-section.clarity-secondary {
+  box-shadow: none;
+  background: transparent;
+}
+
+@media (max-width: 900px) {
+  .reading-mode .chapter-layout {
+    grid-template-columns: minmax(0, 760px);
+  }
+
+  .reading-mode .chapter-sidebar {
+    max-width: 760px;
+  }
+}
+
+@media (max-width: 680px) {
+  .mobile-nav [data-learning-mobile] {
+    display: none !important;
+  }
+
+  .mobile-nav {
+    grid-template-columns: repeat(4, 1fr) !important;
+  }
+
+  .reading-mode .mobile-nav {
+    display: none !important;
+  }
+
+  .reading-mode .topbar {
+    position: relative;
+    min-height: 64px;
+    padding: 8px 13px;
+  }
+
+  .reading-mode .brand img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .reading-mode .brand strong {
+    font-size: 23px;
+  }
+
+  .reading-mode .app {
+    width: min(100% - 34px, 760px);
+    padding: 24px 0 42px;
+  }
+
+  .reading-mode .breadcrumbs {
+    margin-bottom: 17px;
+    font-size: 12px;
+  }
+
+  .reading-mode .chapter-hero {
+    margin-bottom: 18px;
+  }
+
+  .reading-mode .chapter-hero h1 {
+    font-size: 36px;
+    line-height: 1.03;
+    margin: 9px 0 12px;
+  }
+
+  .reading-mode .chapter-hero .lead {
+    font-size: 16px;
+    line-height: 1.65;
+  }
+
+  .reading-mode .chapter-chips {
+    margin-top: 13px;
+  }
+
+  .clarity-section {
+    padding: 24px 0;
+  }
+
+  .clarity-section h2 {
+    font-size: 28px;
+  }
+
+  .clarity-section p,
+  .clarity-section li,
+  .clarity-details li {
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  .clarity-intro {
+    font-size: 17px !important;
+  }
+
+  .clarity-example,
+  .clarity-practice {
+    margin: 20px -4px;
+    padding: 19px;
+    border-radius: 15px;
+  }
+
+  .topic-row {
+    grid-template-columns: auto minmax(0, 1fr) !important;
+    align-items: start !important;
+  }
+
+  .chapter-link {
+    grid-column: 2 !important;
+    justify-self: start !important;
+    margin-top: 8px !important;
+  }
+
+  .reading-mode .chapter-section {
+    padding: 20px 0;
+    border: 0;
+    border-bottom: 1px solid var(--line);
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .reading-mode .chapter-section h2 {
+    font-size: 27px;
+  }
+
+  .reading-mode .chapter-sidebar .chapter-side-card {
+    border-radius: 16px;
+  }
+}

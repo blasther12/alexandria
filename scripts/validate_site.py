@@ -16,6 +16,13 @@ for theme in themes:
     if tid in ids:
         errors.append(f'id duplicado: {tid}')
     ids.add(tid)
+
+    for field in ('focus', 'decisions', 'labs', 'references'):
+        if not isinstance(theme.get(field), list):
+            errors.append(f'{tid}: {field} precisa ser uma lista')
+    if 'tags' in theme and not isinstance(theme.get('tags'), list):
+        errors.append(f'{tid}: tags precisa ser uma lista quando informado')
+
     if len(theme.get('summary', '')) < 70:
         errors.append(f'{tid}: resumo superficial')
     if len(theme.get('focus', [])) < 8:
@@ -29,12 +36,16 @@ for theme in themes:
     if not theme.get('source'):
         errors.append(f'{tid}: sem Codex fonte')
 
+method = data.get('meta', {}).get('method', [])
+if not isinstance(method, list) or len(method) < 4:
+    errors.append('meta.method precisa conter pelo menos quatro etapas')
+
 print(f'Temas: {len(themes)}')
 print(f'Tópicos de aprofundamento: {sum(len(t.get("focus", [])) for t in themes)}')
 print(f'Laboratórios: {sum(len(t.get("labs", [])) for t in themes)}')
 if errors:
-    print('\nFalhas de profundidade:')
+    print('\nFalhas de profundidade/estrutura:')
     for error in errors:
         print(f'- {error}')
     raise SystemExit(1)
-print('Mapa temático e profundidade válidos.')
+print('Mapa temático, estrutura e profundidade válidos.')

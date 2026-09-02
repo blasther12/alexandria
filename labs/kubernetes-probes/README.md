@@ -69,3 +69,7 @@ Registre:
 1. Quando liveness piora um incidente?
 2. O que readiness deveria testar e o que deveria evitar?
 3. Como graceful shutdown conversa com rollout e readiness?
+
+---
+
+[↑ Voltar aos laboratórios](../README.md)

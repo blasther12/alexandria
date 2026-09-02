@@ -85,3 +85,7 @@ Registre:
 1. Qual é a diferença entre conflito de escrita e conflito lógico?
 2. A aplicação deve retryar automaticamente uma transação serializable abortada?
 3. Como você modelaria essa invariante em outro banco?
+
+---
+
+[↑ Voltar aos laboratórios](../README.md)

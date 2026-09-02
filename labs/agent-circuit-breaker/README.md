@@ -72,3 +72,7 @@ step | action | result | cost | state_hash | decision
 2. Como saber se houve progresso?
 3. Qual informação um humano precisa receber no escalonamento?
 4. Que ações deveriam exigir aprovação antes da primeira tentativa?
+
+---
+
+[↑ Voltar aos laboratórios](../README.md)

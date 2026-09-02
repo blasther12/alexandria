@@ -11,9 +11,7 @@ Não é uma lista de links nem um catálogo de ferramentas. Cada Codex procura r
 
 ## Site
 
-A interface navegável da Alexandria está em:
-
-**https://blasther12.github.io/alexandria/**
+A interface temática é mantida em [`docs/`](docs/index.html) e publicada via GitHub Pages quando o Pages do repositório está habilitado.
 
 Ela funciona como PWA, possui tema claro/escuro, progresso local e páginas por tema com:
 
@@ -175,4 +173,4 @@ O conteúdo educacional é licenciado sob [CC BY 4.0](LICENSE); exemplos de cód
 
 ---
 
-[Mapa temático](https://blasther12.github.io/alexandria/) · [Pinakes](PINAKES.md) · [Atlas](atlas/README.md) · [Projetos](projects/README.md)
+[Mapa temático](docs/index.html) · [Pinakes](PINAKES.md) · [Atlas](atlas/README.md) · [Projetos](projects/README.md)

@@ -77,3 +77,7 @@ Em cada cenário responda:
 1. Qual a diferença entre propagation e export?
 2. Quando um atributo deveria ser de Resource?
 3. Como tail sampling muda o ponto em que a decisão de amostragem acontece?
+
+---
+
+[↑ Voltar aos laboratórios](../README.md)

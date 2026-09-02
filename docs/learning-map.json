@@ -1,0 +1,114 @@
+{
+  "tracks": [
+    {
+      "id": "backend",
+      "title": "Backend e APIs",
+      "description": "Do runtime e persistência até APIs, mensageria, resiliência e operação.",
+      "themes": ["fundamentos", "linguagens", "engenharia-software", "dados", "api-gateways", "arquitetura", "sistemas-distribuidos", "mensageria", "observabilidade", "seguranca", "projetos"]
+    },
+    {
+      "id": "arquitetura",
+      "title": "Arquitetura e Sistemas Distribuídos",
+      "description": "Boundaries, dados, consistência, integração, falhas, governança e evolução arquitetural.",
+      "themes": ["fundamentos", "engenharia-software", "arquitetura", "dados", "sistemas-distribuidos", "mensageria", "api-gateways", "observabilidade", "seguranca", "projetos"]
+    },
+    {
+      "id": "platform-sre",
+      "title": "Platform Engineering e SRE",
+      "description": "Infraestrutura, Kubernetes, cloud, edge, observabilidade, confiabilidade, segurança e recuperação.",
+      "themes": ["fundamentos", "infra-cloud", "api-gateways", "observabilidade", "seguranca", "sistemas-distribuidos", "mensageria", "ferramentas", "projetos"]
+    },
+    {
+      "id": "ai-engineering",
+      "title": "AI Engineering",
+      "description": "Fundamentos de modelos, retrieval, evals, tools, MCP, observabilidade, custo e operação de features de IA.",
+      "themes": ["fundamentos", "linguagens", "dados", "ia-fundamentos", "ai-engineering", "observabilidade", "seguranca", "projetos"]
+    },
+    {
+      "id": "agentes",
+      "title": "Agentes e Sistemas Autônomos",
+      "description": "Modelos, tools, estado, memória, políticas, segurança, observabilidade e contenção de falhas.",
+      "themes": ["ia-fundamentos", "ai-engineering", "agentes", "sistemas-distribuidos", "seguranca", "observabilidade", "projetos"]
+    },
+    {
+      "id": "engenharia-completa",
+      "title": "Engenharia de Software de ponta a ponta",
+      "description": "Uma travessia ampla por programação, design, arquitetura, dados, plataforma, operação, segurança e IA.",
+      "themes": ["fundamentos", "linguagens", "engenharia-software", "dados", "arquitetura", "sistemas-distribuidos", "mensageria", "infra-cloud", "api-gateways", "observabilidade", "seguranca", "ia-fundamentos", "ai-engineering", "agentes", "ferramentas", "projetos"]
+    }
+  ],
+  "prerequisites": {
+    "linguagens": ["fundamentos"],
+    "engenharia-software": ["linguagens"],
+    "dados": ["fundamentos"],
+    "arquitetura": ["engenharia-software", "dados"],
+    "sistemas-distribuidos": ["fundamentos", "arquitetura", "dados"],
+    "mensageria": ["sistemas-distribuidos", "dados"],
+    "infra-cloud": ["fundamentos"],
+    "api-gateways": ["fundamentos", "seguranca"],
+    "observabilidade": ["fundamentos"],
+    "seguranca": ["fundamentos", "engenharia-software"],
+    "ia-fundamentos": ["fundamentos", "linguagens"],
+    "ai-engineering": ["ia-fundamentos", "dados", "observabilidade"],
+    "agentes": ["ai-engineering", "seguranca", "sistemas-distribuidos"],
+    "ferramentas": ["fundamentos"],
+    "projetos": ["engenharia-software", "observabilidade"]
+  },
+  "related": {
+    "fundamentos": ["linguagens", "dados", "sistemas-distribuidos", "infra-cloud"],
+    "linguagens": ["engenharia-software", "ia-fundamentos", "ferramentas"],
+    "engenharia-software": ["arquitetura", "seguranca", "projetos"],
+    "arquitetura": ["sistemas-distribuidos", "mensageria", "api-gateways"],
+    "sistemas-distribuidos": ["dados", "mensageria", "observabilidade", "agentes"],
+    "dados": ["mensageria", "ai-engineering", "sistemas-distribuidos"],
+    "mensageria": ["dados", "sistemas-distribuidos", "observabilidade"],
+    "infra-cloud": ["observabilidade", "seguranca", "api-gateways"],
+    "api-gateways": ["seguranca", "observabilidade", "arquitetura"],
+    "observabilidade": ["infra-cloud", "sistemas-distribuidos", "ai-engineering", "agentes"],
+    "seguranca": ["api-gateways", "infra-cloud", "agentes"],
+    "ia-fundamentos": ["ai-engineering", "dados"],
+    "ai-engineering": ["ia-fundamentos", "agentes", "observabilidade"],
+    "agentes": ["ai-engineering", "seguranca", "sistemas-distribuidos"],
+    "ferramentas": ["engenharia-software", "infra-cloud"],
+    "projetos": ["arquitetura", "observabilidade", "seguranca", "ai-engineering"]
+  },
+  "editorial": {
+    "fundamentos": {"status": "reviewed", "lastReviewed": "2026-09-02", "reviewEveryDays": 365},
+    "linguagens": {"status": "reviewed", "lastReviewed": "2026-09-02", "reviewEveryDays": 180},
+    "engenharia-software": {"status": "reviewed", "lastReviewed": "2026-09-02", "reviewEveryDays": 365},
+    "arquitetura": {"status": "reviewed", "lastReviewed": "2026-09-02", "reviewEveryDays": 365},
+    "sistemas-distribuidos": {"status": "reviewed", "lastReviewed": "2026-09-02", "reviewEveryDays": 365},
+    "dados": {"status": "reviewed", "lastReviewed": "2026-09-02", "reviewEveryDays": 180},
+    "mensageria": {"status": "reviewed", "lastReviewed": "2026-09-02", "reviewEveryDays": 180},
+    "infra-cloud": {"status": "reviewed", "lastReviewed": "2026-09-02", "reviewEveryDays": 90},
+    "api-gateways": {"status": "reviewed", "lastReviewed": "2026-09-02", "reviewEveryDays": 90},
+    "observabilidade": {"status": "reviewed", "lastReviewed": "2026-09-02", "reviewEveryDays": 90},
+    "seguranca": {"status": "reviewed", "lastReviewed": "2026-09-02", "reviewEveryDays": 90},
+    "ia-fundamentos": {"status": "reviewed", "lastReviewed": "2026-09-02", "reviewEveryDays": 120},
+    "ai-engineering": {"status": "reviewed", "lastReviewed": "2026-09-02", "reviewEveryDays": 60},
+    "agentes": {"status": "reviewed", "lastReviewed": "2026-09-02", "reviewEveryDays": 60},
+    "ferramentas": {"status": "reviewed", "lastReviewed": "2026-09-02", "reviewEveryDays": 180},
+    "projetos": {"status": "reviewed", "lastReviewed": "2026-09-02", "reviewEveryDays": 180}
+  },
+  "referenceLinks": {
+    "Python Documentation": "https://docs.python.org/3/",
+    "Node.js Documentation": "https://nodejs.org/docs/latest/api/",
+    "TypeScript Handbook": "https://www.typescriptlang.org/docs/handbook/intro.html",
+    "The Go Programming Language": "https://go.dev/doc/",
+    "Kotlin Documentation": "https://kotlinlang.org/docs/home.html",
+    "PostgreSQL Documentation": "https://www.postgresql.org/docs/",
+    "Apache Kafka Documentation": "https://kafka.apache.org/documentation/",
+    "AWS SQS Documentation": "https://docs.aws.amazon.com/sqs/",
+    "Docker Documentation": "https://docs.docker.com/",
+    "Kubernetes Documentation": "https://kubernetes.io/docs/",
+    "Kong Gateway Documentation": "https://developer.konghq.com/gateway/",
+    "Google Apigee Documentation": "https://cloud.google.com/apigee/docs",
+    "OpenTelemetry Specification": "https://opentelemetry.io/docs/specs/",
+    "Prometheus Documentation": "https://prometheus.io/docs/",
+    "OWASP ASVS": "https://owasp.org/www-project-application-security-verification-standard/",
+    "OWASP Top 10": "https://owasp.org/www-project-top-ten/",
+    "MCP Specification": "https://modelcontextprotocol.io/specification/",
+    "PyTorch Tutorials": "https://docs.pytorch.org/tutorials/",
+    "Git Documentation": "https://git-scm.com/docs"
+  }
+}

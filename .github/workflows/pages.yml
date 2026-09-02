@@ -36,12 +36,16 @@ jobs:
         run: |
           python scripts/validate_site.py
           python -m json.tool docs/data.json > /dev/null
+          python -m json.tool docs/learning-map.json > /dev/null
           python -m json.tool docs/manifest.webmanifest > /dev/null
           node --check docs/assets/app.js
           node --check docs/assets/chapters-v2.js
+          node --check docs/assets/learning-tools.js
           node --check docs/assets/theme-bootstrap.js
           test -s docs/assets/chapters.css
+          test -s docs/assets/learning-tools.css
           test -s docs/icons/alexandria-mark.svg
+          test -s labs/README.md
 
       - name: Setup Pages
         uses: actions/configure-pages@v6

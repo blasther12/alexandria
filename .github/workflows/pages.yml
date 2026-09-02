@@ -38,7 +38,9 @@ jobs:
           python -m json.tool docs/data.json > /dev/null
           python -m json.tool docs/manifest.webmanifest > /dev/null
           node --check docs/assets/app.js
+          node --check docs/assets/chapters-v2.js
           node --check docs/assets/theme-bootstrap.js
+          test -s docs/assets/chapters.css
           test -s docs/icons/alexandria-mark.svg
 
       - name: Setup Pages

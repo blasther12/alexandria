@@ -71,3 +71,7 @@ estratégia | recall@5 | qualidade final | custo | latência
 2. Quando reranking paga seu custo?
 3. Qual slice do dataset mais falha?
 4. Como detectar regressão depois de trocar embeddings ou chunking?
+
+---
+
+[↑ Voltar aos laboratórios](../README.md)

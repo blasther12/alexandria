@@ -1,0 +1,53 @@
+name: Deploy Alexandria to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Generate PWA icons
+        run: |
+          python -m pip install --disable-pip-version-check cairosvg
+          python scripts/generate_site_icons.py
+          test -s docs/icons/icon-192.png
+          test -s docs/icons/icon-512.png
+          test -s docs/icons/apple-touch-icon.png
+
+      - name: Validate site and thematic depth
+        run: |
+          python scripts/validate_site.py
+          python -m json.tool docs/data.json > /dev/null
+          python -m json.tool docs/manifest.webmanifest > /dev/null
+          node --check docs/assets/app.js
+          test -s docs/icons/alexandria-mark.svg
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v6
+
+      - name: Upload static site
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: docs
+
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v5

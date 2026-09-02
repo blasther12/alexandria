@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">Alexandria</title>
+  <desc id="desc">Um A formado como portal sobre camadas de conhecimento e um livro aberto.</desc>
+  <rect width="512" height="512" rx="106" fill="#11120f"/>
+  <circle cx="256" cy="256" r="220" fill="none" stroke="#37352f" stroke-width="6"/>
+  <path d="M143 342 236 116c7-17 33-17 40 0l93 226h-63l-17-45h-68l-17 45h-61Zm99-99h26l-13-36-13 36Z" fill="#f4f0e7"/>
+  <path d="M256 201 276 238h-40l20-37Z" fill="#c9a24b"/>
+  <rect x="212" y="267" width="88" height="18" rx="9" fill="#f4f0e7"/>
+  <rect x="196" y="298" width="120" height="19" rx="9.5" fill="#c9a24b"/>
+  <path d="M164 354h69c11 0 19 3 23 10 4-7 12-10 23-10h69v29h-58c-14 0-25 5-34 16-9-11-20-16-34-16h-58v-29Z" fill="#f4f0e7"/>
+  <path d="M142 393h78c16 0 28 5 36 16 8-11 20-16 36-16h78v27h-76c-18 0-29 5-38 18-9-13-20-18-38-18h-76v-27Z" fill="#c9a24b"/>
+</svg>

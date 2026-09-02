@@ -1,179 +1,178 @@
 # 🏛️ Alexandria
 
-> **A living library of Software Engineering knowledge.**<br>
+> **A living library of Software Engineering knowledge.**  
 > Learn. Connect. Build. Preserve.
 
-Alexandria é uma universidade open source pessoal para estudar Engenharia de
-Software em português brasileiro. Ela conecta fundamentos, prática deliberada,
-projetos e referências primárias em percursos que vão do primeiro programa a
-decisões de arquitetura de sistemas em produção.
+Alexandria é uma **biblioteca open source de engenharia e tecnologia** em português brasileiro. O conteúdo é organizado por temas conectados, não por anos, semestres ou disciplinas obrigatórias. Você pode entrar por Fundamentos, Linguagens, Arquitetura, Sistemas Distribuídos, Dados, Cloud, Segurança, IA ou qualquer outro tema que resolva o problema que está estudando agora.
 
-Não é uma lista de links nem um catálogo de ferramentas. Cada Codex procura
-responder: **que problema existe, como a solução funciona, quais compromissos
-ela impõe, como falha e como comprovamos que funciona?**
+Não é uma lista de links nem um catálogo de ferramentas. Cada Codex procura responder:
 
-## Comece aqui
+> **Que problema existe, como a solução funciona, quais compromissos ela impõe, como falha e como comprovamos que funciona?**
+
+## Site
+
+A interface navegável da Alexandria está em:
+
+**https://blasther12.github.io/alexandria/**
+
+Ela funciona como PWA, possui tema claro/escuro, progresso local e páginas por tema com:
+
+- mecanismos e conceitos que vale dominar;
+- decisões e trade-offs que você deve conseguir justificar;
+- laboratórios para tornar o mecanismo observável;
+- referências de aprofundamento;
+- link direto para o Codex completo no repositório.
+
+A interface não tenta substituir os documentos do repositório. Ela é o mapa; os Codices são o acervo profundo.
+
+## Como navegar
 
 | Quero… | Entrada recomendada | Resultado esperado |
 | --- | --- | --- |
-| construir uma base sólida | [Fundamentos](fundamentals/README.md) | modelo mental de computação, redes e engenharia |
-| escolher uma linguagem | [Comparação de linguagens](languages/comparison.md) | decisão baseada em contexto e trade-offs |
-| seguir um currículo completo | [Atlas](atlas/README.md) | ordem, dependências e marcos verificáveis |
-| ver nível e pré-requisitos de cada assunto | [Matriz curricular](CURRICULUM.md) | rota explícita de Beginner a Expert |
-| encontrar um assunto | [Pinakes](PINAKES.md) | índice global por domínio e conceito |
-| decidir o próximo passo | [Pharos](PHAROS.md) | rotas de continuidade conforme o objetivo |
-| aprender construindo | [Projetos](projects/README.md) | portfólio incremental, do monólito ao sistema distribuído |
-| consultar fontes confiáveis | [Library](library/README.md) | documentação, livros, papers e RFCs curados |
+| entender os mecanismos básicos | [Fundamentos](fundamentals/README.md) | modelos mentais de CPU, memória, SO, redes e performance |
+| comparar linguagens | [Linguagens](languages/comparison.md) | decisão por runtime, tipos, concorrência e contexto |
+| melhorar design e testes | [Engenharia de Software](software-engineering/README.md) | boundaries, contratos, testes e evolução mais conscientes |
+| tomar decisões arquiteturais | [Arquitetura](architecture/README.md) | trade-offs explícitos, ADRs e fitness functions |
+| raciocinar sob falhas parciais | [Sistemas Distribuídos](distributed-systems/README.md) | consistência, coordenação, resiliência e recovery |
+| escolher e operar persistência | [Bancos de dados](databases/README.md) | modelos, índices, transações, replicação e migração |
+| trabalhar com eventos e filas | [Mensageria](messaging/README.md) | entrega, ordering, replay, idempotência e lag |
+| operar em cloud | [Cloud](cloud/README.md) | elasticidade, managed services, custo e confiabilidade |
+| estudar containers e orchestration | [Docker](containers/docker/README.md) / [Kubernetes](kubernetes/README.md) | processos reproduzíveis e reconciliation sob falhas |
+| aprofundar gateways | [API Gateways](api-gateways/README.md) | Kong, Apigee, auth, quotas e lifecycle de APIs |
+| investigar produção | [Observabilidade](observability/README.md) | sinais, OTel, SLOs e diagnóstico por evidência |
+| reduzir risco | [Segurança](security/README.md) | threat modeling, identidade, supply chain e resposta |
+| construir features de IA | [AI Engineering](ai-engineering/README.md) | evals, RAG, MCP, guardrails, tools e custo |
+| estudar sistemas autônomos | [Agentes](agents/README.md) | loops, memória, planejamento, permissões e auditoria |
+| aprender construindo | [Projetos](projects/README.md) | prática progressiva com código, falha e recuperação |
+| consultar fontes | [Library](library/README.md) | documentação, livros, papers e RFCs curados |
 
-## Filosofia
+## Método Alexandria
 
-Uma tecnologia só entra no currículo quando ocupa um lugar claro no mapa. O
-estudo combina quatro movimentos:
+O estudo combina quatro movimentos:
 
 1. **Compreender** — princípios, história, internals e vocabulário.
 2. **Experimentar** — exemplos pequenos que tornam o mecanismo observável.
-3. **Decidir** — alternativas, restrições, falhas e custos operacionais.
-4. **Construir** — exercícios e projetos com critérios de conclusão.
+3. **Decidir** — alternativas, restrições, falhas, custo e reversibilidade.
+4. **Construir** — exercícios e projetos com critérios verificáveis.
 
-Princípios, patterns e arquiteturas são ferramentas de raciocínio, não dogmas.
-O contexto decide se uma abstração reduz ou apenas desloca complexidade.
+Avançar não significa “terminar uma página”. Significa conseguir explicar o mecanismo, reproduzir um comportamento ou falha, comparar alternativas e produzir evidência revisável: código, teste, benchmark, trace, ADR, diagrama, threat model ou runbook.
 
-## Atlas
+## Mapa temático
 
 ```mermaid
 flowchart LR
     F[Fundamentos] --> L[Linguagens]
-    L --> SE[Engenharia de Software]
-    SE --> D[(Dados)]
+    F --> SE[Engenharia de Software]
+    L --> SE
     SE --> A[Arquitetura]
-    A --> DS[Sistemas distribuídos]
+    SE --> D[(Dados)]
+    A --> DS[Sistemas Distribuídos]
     D --> DS
+    DS --> M[Mensageria]
     DS --> I[Infraestrutura e Cloud]
+    I --> O[Observabilidade]
+    A --> G[API Gateways]
+    I --> S[Segurança]
     D --> AI[AI Engineering]
     I --> AI
     AI --> AG[Agentes]
 ```
 
-O [Atlas](atlas/README.md) contém os roadmaps completos e define quatro níveis:
-**Fundamentos**, **Aplicação**, **Proficiência** e **Sistemas**. Avançar significa
-demonstrar capacidade, não apenas terminar leituras. A
-[Matriz curricular](CURRICULUM.md) traduz esses estágios para **Beginner**,
-**Intermediate**, **Advanced** e **Expert**, registra os pré-requisitos de cada
-assunto e mostra em quais trilhas ele participa.
+O [Atlas](atlas/README.md), o [Pinakes](PINAKES.md) e o [Pharos](PHAROS.md) continuam existindo como mapas auxiliares. Eles não definem uma “grade”. Servem para descobrir dependências, localizar conceitos e decidir um próximo aprofundamento.
 
-## Trilhas de estudo
+## Temas principais
 
-A trilha de [Engenharia de Software](atlas/software-engineer.md) fornece a base
-geral. Depois dela, ou em paralelo conforme a experiência, o Atlas oferece cinco
-especializações canônicas:
+### Fundamentos
 
-| Trilha | Foco | Evidência final |
-| --- | --- | --- |
-| [Backend Engineer](atlas/backend-engineer.md) | APIs, dados, concorrência, mensageria e confiabilidade | serviço resiliente medido sob falha |
-| [Distributed Systems](atlas/distributed-systems-engineer.md) | tempo, replicação, consistência, coordenação e recovery | sistema com falhas parciais reproduzidas |
-| [Software Architect](atlas/software-architect.md) | atributos de qualidade, boundaries e evolução | decisões com ADRs e fitness functions |
-| [Platform / Cloud Engineer](atlas/platform-cloud-engineer.md) | containers, Kubernetes, cloud, GitOps e plataforma | golden path seguro, observável e operável |
-| [AI Engineer](atlas/ai-engineer.md) | evals, LLMs, RAG, tools e agentes | feature avaliada com custo e risco controlados |
+Representação de dados, estruturas, algoritmos, CPU, caches, memória, processos, threads, I/O, redes, percentis, filas e capacidade.
 
-Cada trilha começa com diagnóstico, passa por laboratórios e usa os mesmos
-[projetos progressivos](projects/README.md) como campo de provas. A conclusão
-exige código, falha exercitada, observabilidade, decisão técnica e recuperação,
-não apenas páginas lidas.
+### Linguagens e runtimes
 
-## Linguagens
+- [Python](languages/python/README.md)
+- [JavaScript](languages/javascript/README.md)
+- [TypeScript](languages/typescript/README.md)
+- [Go](languages/golang/README.md)
+- [Kotlin](languages/kotlin/README.md)
+- [Comparação de linguagens](languages/comparison.md)
 
-| Trilha | Ênfase | Comece por |
-| --- | --- | --- |
-| [Python](languages/python/README.md) | automação, backend, dados e IA | tipos em runtime, iteradores e modelo de objetos |
-| [JavaScript](languages/javascript/README.md) | web, Node.js e programação assíncrona | Event Loop e modelo de execução |
-| [TypeScript](languages/typescript/README.md) | sistemas JavaScript com contratos estáticos | narrowing e tipagem estrutural |
-| [Go](languages/golang/README.md) | serviços, CLI e infraestrutura | interfaces, goroutines e cancelamento |
-| [Kotlin](languages/kotlin/README.md) | JVM, Android e multiplataforma | null safety, coroutines e interoperabilidade |
+O objetivo é entender modelo de execução e trade-offs, não eleger “a melhor linguagem”.
 
-Veja a [comparação multidimensional](languages/comparison.md). Não existe uma
-linguagem universalmente melhor; existem escolhas mais adequadas a restrições
-específicas.
-
-## Engenharia de Software
+### Engenharia de Software
 
 - [Princípios e design](software-engineering/README.md)
 - [Design Patterns](design-patterns/README.md)
-- [Domain-Driven Design](software-engineering/ddd/README.md)
+- [DDD](software-engineering/ddd/README.md)
 - [Testing](software-engineering/testing/README.md)
 - [System Design](software-engineering/system-design/README.md)
 - [Spec-Driven Development](spec-driven-development/README.md)
 
-## Arquitetura e sistemas distribuídos
+### Arquitetura e sistemas distribuídos
 
-- [Arquitetura de Software](architecture/README.md): estilos, atributos de
-  qualidade, fitness functions e evolução.
-- [Sistemas distribuídos](distributed-systems/README.md): tempo, falhas,
-  coordenação, consistência e padrões de resiliência.
-- [Mensageria](messaging/README.md): Kafka, SQS, entrega, replay e idempotência.
-- [Bancos de dados](databases/README.md): modelos, índices, transações,
-  replicação e decisões de persistência.
+- [Arquitetura](architecture/README.md): atributos de qualidade, estilos, boundaries e evolução.
+- [Sistemas distribuídos](distributed-systems/README.md): tempo, falhas, consistência, coordenação e recovery.
+- [Mensageria](messaging/README.md): Kafka, SQS, entrega, replay, ordering e idempotência.
+- [Bancos de dados](databases/README.md): modelos, índices, transações, replicação e particionamento.
 
-## Infraestrutura
+### Plataforma e operação
 
-| Área | Questão central |
-| --- | --- |
-| [Docker](containers/docker/README.md) | como empacotar processos de forma reproduzível e segura? |
-| [Kubernetes](kubernetes/README.md) | como reconciliar estado desejado sob falhas? |
-| [API Gateways](api-gateways/README.md) | onde aplicar políticas de tráfego sem concentrar domínio? |
-| [Observabilidade](observability/README.md) | como inferir o estado interno a partir de sinais externos? |
-| [Segurança](security/README.md) | como reduzir risco por desenho e por operação? |
-| [Cloud](cloud/README.md) | como equilibrar elasticidade, custo e dependência do provedor? |
+- [Docker](containers/docker/README.md)
+- [Kubernetes](kubernetes/README.md)
+- [Cloud](cloud/README.md)
+- [API Gateways](api-gateways/README.md)
+- [Observabilidade](observability/README.md)
+- [Segurança](security/README.md)
 
-## Inteligência Artificial
+### Inteligência Artificial
 
-- [Fundamentos de IA](artificial-intelligence/README.md): ML, Deep Learning,
-  Transformers, embeddings e modelos generativos.
-- [AI Engineering](ai-engineering/README.md): gateways, RAG, routing,
-  guardrails, observabilidade e avaliação.
-- [Model Context Protocol](ai-engineering/mcp/README.md): hosts, clients,
-  servers, tools, resources e transports.
-- [Agentes](agents/README.md): loops, estado, planejamento, ferramentas e
-  human-in-the-loop.
-- [Skills](skills/README.md): instruções reutilizáveis e progressive disclosure.
+- [Fundamentos de IA](artificial-intelligence/README.md)
+- [AI Engineering](ai-engineering/README.md)
+- [Model Context Protocol](ai-engineering/mcp/README.md)
+- [Agentes](agents/README.md)
+- [Skills](skills/README.md)
 
-## Ferramentas do desenvolvedor
+Aqui a régua inclui avaliação, custo, observabilidade, permissões e segurança. Uma demo que “parece funcionar” ainda não é uma feature confiável.
 
-- [Git](developer-tools/git/README.md): do modelo de objetos ao reflog, bisect e
-  estratégias de integração.
-- [Vim](developer-tools/vim/README.md): linguagem de edição baseada em
-  `operator + motion`, não uma lista de atalhos.
+### Ferramentas
 
-## Livros, exercícios e projetos
+- [Git](developer-tools/git/README.md)
+- [Vim](developer-tools/vim/README.md)
 
-- [BOOKS.md](BOOKS.md) cataloga obras por assunto sem reproduzir conteúdo
-  protegido; os [guias de leitura](books/README.md) propõem sequências.
-- [Exercícios](exercises/README.md) define o contrato de prática nos níveis
-  Beginner, Intermediate, Advanced e Expert.
-- [Projetos](projects/README.md) conecta doze entregas progressivas em uma única
-  arquitetura evolutiva.
-- [Perguntas de entrevista](interview/README.md) privilegiam raciocínio e
-  diagnóstico, não memorização.
+Ferramentas são estudadas por seus modelos: grafo de objetos no Git, `operator + motion` no Vim, e não como listas de atalhos.
 
-## Estado e evolução
+## Aprenda construindo
 
-Alexandria nasce com a arquitetura completa e Codices iniciais profundos. O
-[Roadmap](ROADMAP.md) explicita o que está consolidado, em expansão ou planejado.
-Uma página curta pode ser um índice intencional; nunca deve fingir ser um guia
-completo. A auditoria automática do currículo compara os guias canônicos com o
-nível e o perfil editorial declarados e publica no CI uma fila de páginas que
-ainda precisam de aprofundamento. Versões publicadas e mudanças compatíveis
-estão registradas no [Changelog](CHANGELOG.md).
+[Projetos](projects/README.md) conectam os temas em entregas progressivas. A evidência desejada não é somente código rodando. Inclua, quando fizer sentido:
+
+- testes e contratos;
+- carga e percentis;
+- logs, métricas e traces;
+- fault injection;
+- SLO e overload policy;
+- threat model;
+- ADRs;
+- runbook e recovery;
+- evals e custo para IA.
+
+## Livros e fontes
+
+- [BOOKS.md](BOOKS.md) cataloga obras por assunto.
+- [Guias de leitura](books/README.md) propõem sequências.
+- [Library](library/README.md) privilegia documentação oficial, RFCs, papers e referências primárias.
+
+Referências não entram apenas como links. O objetivo é deixar claro **por que** uma fonte é útil e qual pergunta ela ajuda a responder.
+
+## Qualidade do acervo
+
+O CI valida estrutura, links, Markdown, diagramas Mermaid e profundidade do acervo. Uma página curta pode ser um índice intencional; não deve fingir ser um guia completo.
+
+O [Roadmap](ROADMAP.md) registra o que está consolidado, em expansão ou planejado. Mudanças publicadas ficam no [Changelog](CHANGELOG.md).
 
 ## Contribuindo
 
-Leia [CONTRIBUTING.md](CONTRIBUTING.md) antes de propor conteúdo. Toda referência
-deve existir, apontar preferencialmente para a fonte oficial e explicar por que
-é útil. Use os [templates](templates/README.md) e valide o repositório antes de
-abrir uma contribuição.
+Leia [CONTRIBUTING.md](CONTRIBUTING.md). Use os [templates](templates/README.md), explique a utilidade das referências e prefira fontes oficiais ou primárias quando existirem.
 
-O conteúdo educacional é licenciado sob [CC BY 4.0](LICENSE); exemplos de código,
-sob [MIT](LICENSE-CODE).
+O conteúdo educacional é licenciado sob [CC BY 4.0](LICENSE); exemplos de código, sob [MIT](LICENSE-CODE).
 
 ---
 
-[Matriz curricular](CURRICULUM.md) · [Índice global](PINAKES.md) · [Próximo: Atlas →](atlas/README.md)
+[Mapa temático](https://blasther12.github.io/alexandria/) · [Pinakes](PINAKES.md) · [Atlas](atlas/README.md) · [Projetos](projects/README.md)

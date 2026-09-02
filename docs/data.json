@@ -1,0 +1,185 @@
+{
+  "meta": {
+    "name": "Alexandria",
+    "description": "Biblioteca temática aprofundada de engenharia de software, sistemas, cloud, dados e inteligência artificial.",
+    "method": ["Compreender", "Experimentar", "Decidir", "Construir"]
+  },
+  "themes": [
+    {
+      "id": "fundamentos",
+      "title": "Fundamentos de Computação",
+      "category": "Base",
+      "summary": "Representação, estruturas, CPU, memória, sistemas operacionais, redes, algoritmos, filas e performance.",
+      "source": "fundamentals/README.md",
+      "focus": ["Bits, inteiros, overflow e ponto flutuante", "Unicode, UTF-8 e representação de texto", "Arrays, hash tables, árvores, heaps e invariantes", "CPU, registradores, cache locality e branch prediction", "Stack, heap, GC e tempo de vida", "Processos, threads, scheduler e contenção", "Syscalls, file descriptors, I/O e memória virtual", "DNS, TCP/QUIC, TLS e HTTP", "p50, p95, p99, Little's Law e saturação", "Profiling, capacity planning e modos de falha"],
+      "decisions": ["Escolher estrutura pela operação dominante e custo escondido, não só por Big O.", "Separar CPU time de wall time antes de otimizar.", "Definir limites e backpressure antes de aumentar concorrência.", "Medir a fila e o recurso saturado antes de escalar infraestrutura."],
+      "labs": ["Comparar array e hash table com datasets crescentes e medir locality/memória.", "Observar processos, threads, sockets, FDs e page faults de um serviço local.", "Decompor uma requisição HTTPS em DNS, conexão, TLS, aplicação e dependências.", "Aumentar carga até o ponto de joelho e explicar throughput, fila, latência e erro."],
+      "references": ["Computer Systems: A Programmer's Perspective", "Operating Systems: Three Easy Pieces", "Linux Kernel Documentation", "Site Reliability Engineering"]
+    },
+    {
+      "id": "linguagens",
+      "title": "Linguagens e Runtimes",
+      "category": "Programação",
+      "summary": "Python, JavaScript, TypeScript, Go e Kotlin comparados por execução, tipos, memória, concorrência e operação.",
+      "source": "languages/comparison.md",
+      "focus": ["Como comparar linguagens sem torcida", "Python: object model, iteradores, GIL, asyncio e typing", "JavaScript: event loop, microtasks, libuv, streams e workers", "TypeScript: narrowing, generics, unions e validação runtime", "Go: interfaces, goroutines, channels, context e GC", "Kotlin: JVM, null safety, coroutines, flows e sealed classes", "Runtime, garbage collection e profiling", "FFI, interoperabilidade e ecossistema", "Build, deployment, cold start e consumo de memória"],
+      "decisions": ["Escolher linguagem pelo domínio, runtime, equipe e operação.", "Definir o que o compilador garante e o que continua exigindo validação runtime.", "Distinguir concorrência de paralelismo.", "Não comparar apenas throughput: considerar debugging, delivery e manutenção."],
+      "labs": ["Implementar o mesmo serviço pequeno em duas linguagens e comparar build, memória e p99.", "Comparar CPU-bound e I/O-bound em Python com threads, asyncio e processos.", "Medir event-loop lag em Node e mover CPU intensa para worker.", "Criar fan-out em Go/Kotlin com deadline, cancelamento e limite de concorrência."],
+      "references": ["Fluent Python", "Node.js Documentation", "TypeScript Handbook", "The Go Programming Language", "Kotlin Documentation"]
+    },
+    {
+      "id": "engenharia-software",
+      "title": "Engenharia de Software",
+      "category": "Design",
+      "summary": "Coesão, acoplamento, DDD, testes, patterns, refactoring, especificações e system design orientados a risco de mudança.",
+      "source": "software-engineering/README.md",
+      "focus": ["Coesão, acoplamento e information hiding", "Domain-Driven Design estratégico e tático", "Testing: unidade, integração, contratos, E2E e property-based", "Design Patterns como resposta a forças", "Refactoring e dívida técnica", "Spec-Driven Development e contratos", "System Design e capacity planning", "Code review, ownership e evolução", "Qualidade interna versus velocidade sustentável"],
+      "decisions": ["Criar abstração somente quando ela protege volatilidade real.", "Testar riscos e contratos em vez de maximizar contagem de testes.", "Usar DDD para descobrir boundaries, não para espalhar classes cerimoniais.", "Transformar requisitos vagos em invariantes e cenários verificáveis."],
+      "labs": ["Mapear change coupling de um módulo real pelo histórico Git.", "Criar context map de um domínio e dois ADRs de boundary.", "Trocar mocks frágeis por testes de contrato ou integração real.", "Especificar uma API antes da implementação e validar compatibilidade no CI."],
+      "references": ["A Philosophy of Software Design", "Domain-Driven Design", "Growing Object-Oriented Software, Guided by Tests", "Refactoring", "The Art of Scalability"]
+    },
+    {
+      "id": "arquitetura",
+      "title": "Arquitetura de Software",
+      "category": "Arquitetura",
+      "summary": "Boundaries, atributos de qualidade, estilos, ownership de dados, unidades de deploy, ADRs e arquitetura evolutiva.",
+      "source": "architecture/README.md",
+      "focus": ["Drivers e cenários de atributos de qualidade", "Monólito modular e enforcement de boundaries", "Microsserviços e independent deployability", "Clean, Hexagonal e Onion", "Event-driven: notification, event-carried state e streams", "CQRS e Event Sourcing como decisões independentes", "ADRs, reversibilidade e gatilhos de revisão", "Fitness functions e governança automatizada", "Migração incremental e strangler patterns"],
+      "decisions": ["Preferir a menor arquitetura que atende restrições atuais.", "Desacoplar logicamente antes de distribuir fisicamente.", "Alinhar boundaries a capability e ownership, não apenas camadas técnicas.", "Tratar observabilidade, migração e recuperação como parte do design."],
+      "labs": ["Converter requisitos vagos em cinco cenários de qualidade mensuráveis.", "Fiscalizar imports e ownership de tabelas em um monólito modular.", "Avaliar uma extração de microsserviço por coupling, escala, ownership e custo operacional.", "Escrever ADR com alternativas, consequências e fitness function executável."],
+      "references": ["Fundamentals of Software Architecture", "Software Architecture: The Hard Parts", "Building Evolutionary Architectures", "Designing Data-Intensive Applications", "Release It!"]
+    },
+    {
+      "id": "sistemas-distribuidos",
+      "title": "Sistemas Distribuídos",
+      "category": "Sistemas",
+      "summary": "Tempo, falhas parciais, causalidade, consistência, replicação, consenso, resiliência e recuperação.",
+      "source": "distributed-systems/README.md",
+      "focus": ["Happens-before, relógios lógicos e clock skew", "Falhas parciais e conhecimento incompleto", "Linearizabilidade, serializabilidade e consistência eventual", "Replicação leader/follower e quorums", "Sharding, hot keys e rebalanceamento", "Consensus, leader election, Raft e fencing", "Timeout, deadline, retry budget, jitter e circuit breaker", "Sagas, outbox, inbox e CDC", "Backpressure, overload e load shedding", "Fault injection, game days, RTO e RPO"],
+      "decisions": ["Declarar qual invariante exige consistência forte.", "Propagar deadlines e limitar retries por orçamento.", "Separar workflow de negócio de mecanismo de entrega.", "Projetar recovery antes de assumir o happy path."],
+      "labs": ["Simular reorder/latency e comparar tempo físico com causalidade.", "Modelar carrinho, saldo e feed com consistências diferentes.", "Injetar retry storm e corrigir com backoff/jitter/budget.", "Implementar saga com outbox e consumidor idempotente e depois executar replay."],
+      "references": ["Distributed Systems — van Steen & Tanenbaum", "Designing Data-Intensive Applications", "Lamport — Time, Clocks, and the Ordering of Events", "Raft Paper", "FLP Paper"]
+    },
+    {
+      "id": "dados",
+      "title": "Dados e Bancos",
+      "category": "Dados",
+      "summary": "Modelos de dados, índices, transações, isolamento, replicação, particionamento e migrações sem downtime.",
+      "source": "databases/README.md",
+      "focus": ["Relacional, documento, key-value, wide-column e grafo", "Access patterns e invariantes", "B-tree, LSM-tree e índices compostos", "Query planner, estatísticas e EXPLAIN", "ACID, MVCC e níveis de isolamento", "Lost update, write skew e serializabilidade", "WAL, replicação, lag e failover", "Partition keys, hot spots e scatter-gather", "Schema evolution, expand-contract e backfill", "CDC, dual read/write e compatibilidade"],
+      "decisions": ["Modelar workload e invariantes antes de escolher produto.", "Tratar índice como trade-off de leitura versus escrita/memória.", "Escolher isolamento pela anomalia que o domínio não tolera.", "Planejar rollback de schema antes da migração."],
+      "labs": ["Modelar o mesmo domínio em relacional e documento.", "Comparar full scan e índices com EXPLAIN ANALYZE.", "Reproduzir lost update/write skew em duas sessões.", "Projetar uma migração expand-contract com backfill observável."],
+      "references": ["Designing Data-Intensive Applications", "PostgreSQL Documentation", "Dynamo Paper", "Cassandra Architecture Documentation", "Evolutionary Database Design"]
+    },
+    {
+      "id": "mensageria",
+      "title": "Mensageria e Streaming",
+      "category": "Integração",
+      "summary": "Kafka, SQS, filas e logs estudados por entrega, ordering, replay, schema, idempotência, lag e backpressure.",
+      "source": "messaging/README.md",
+      "focus": ["Fila versus log versus stream", "Consumer groups, offsets e visibility timeout", "At-most-once e at-least-once", "Exactly-once e limites da garantia", "Idempotency keys e deduplicação persistente", "Ordering por chave e particionamento", "Schema Registry e compatibilidade", "Consumer lag, retry topics e DLQ", "Replay seguro e poison messages", "Backpressure e autoscaling de consumidores"],
+      "decisions": ["Escolher broker pelo modelo de retenção e recuperação, não pela moda.", "Definir a fronteira exata da semântica de entrega.", "Exigir ordering apenas onde existe invariante real.", "Tratar DLQ como processo de recuperação, não cemitério."],
+      "labs": ["Modelar o mesmo fluxo em SQS e Kafka.", "Injetar redelivery e provar idempotência persistente.", "Evoluir três versões de evento e validar compatibilidade.", "Executar replay com dry-run, janela, métricas e controle de efeitos."],
+      "references": ["Apache Kafka Documentation", "AWS SQS Documentation", "Enterprise Integration Patterns", "Confluent Schema Registry Documentation"]
+    },
+    {
+      "id": "infra-cloud",
+      "title": "Containers, Kubernetes e Cloud",
+      "category": "Plataforma",
+      "summary": "Containers, orchestration, networking, GitOps, serviços gerenciados, elasticidade, confiabilidade e custo.",
+      "source": "cloud/README.md",
+      "focus": ["OCI images, layers, namespaces e cgroups", "PID 1, signals, resource limits e segurança de container", "Kubernetes control loops, scheduler e controllers", "Readiness, liveness, requests/limits e rollout", "Services, DNS, ingress, Gateway API, CNI e NetworkPolicy", "GitOps, reconciliation, drift e promoção", "Cloud regions, AZs, autoscaling e shared responsibility", "Managed services versus self-managed", "IaC e políticas", "FinOps, unit economics, egress e rightsizing"],
+      "decisions": ["Containerizar processo sem confundir container com VM.", "Configurar probes pela capacidade real de servir tráfego.", "Usar managed services quando o trade-off operacional justifica lock-in/custo.", "Tratar custo como atributo arquitetural mensurável."],
+      "labs": ["Construir imagem multi-stage non-root e testar SIGTERM.", "Provocar crash, node drain e rollout ruim em Kubernetes.", "Traçar request do ingress até o Pod incluindo DNS e políticas.", "Criar modelo de custo por transação e três otimizações com riscos."],
+      "references": ["Docker Documentation", "Kubernetes Documentation", "OpenGitOps", "AWS Well-Architected Framework", "FinOps Framework"]
+    },
+    {
+      "id": "api-gateways",
+      "title": "API Gateways e Gestão de APIs",
+      "category": "Plataforma",
+      "summary": "Kong, Apigee, autenticação, quotas, policies, plugins, lifecycle e observabilidade de APIs.",
+      "source": "api-gateways/README.md",
+      "focus": ["Routing, TLS termination e policies transversais", "OAuth2, OIDC, JWT, API keys e mTLS", "Rate limiting: token bucket, burst e quotas", "Kong DB-less, control/data plane e plugins", "Apigee proxies, flows, policies, products e apps", "Transformações sem vazar lógica de domínio", "Versionamento e deprecation", "Trace propagation e consumer analytics", "Governança e catálogo de APIs"],
+      "decisions": ["Colocar no gateway política de tráfego, não conhecimento de domínio.", "Distinguir autenticação, autorização e subscription.", "Escolher chave de rate limit pela entidade protegida.", "Preservar contexto e tracing através do edge."],
+      "labs": ["Classificar regras reais entre gateway, serviço e domínio.", "Modelar client credentials e usuário final com OAuth/OIDC.", "Comparar rate limit local e distribuído sob burst.", "Montar um proxy Apigee ou route Kong com auth, quota e troubleshooting 401/429."],
+      "references": ["Kong Gateway Documentation", "Google Apigee Documentation", "RFC 6749", "OpenID Connect Core", "OpenTelemetry HTTP Semantic Conventions"]
+    },
+    {
+      "id": "observabilidade",
+      "title": "Observabilidade e SRE",
+      "category": "Operação",
+      "summary": "Logs, métricas, traces, OpenTelemetry, SLOs, sampling e investigação de incidentes orientada por evidência.",
+      "source": "observability/README.md",
+      "focus": ["Logs, métricas, traces e events por pergunta", "Cardinalidade e custo dos sinais", "OpenTelemetry SDK, Collector, OTLP e propagation", "Resource versus span attributes", "RED, USE e métricas de saturação", "SLI, SLO, error budget e burn rate", "Head sampling e tail sampling", "Trace/log/metric correlation", "Runbooks, change events e postmortem", "Método de investigação e falsificação de hipóteses"],
+      "decisions": ["Instrumentar perguntas operacionais, não dashboards por hábito.", "Evitar labels de alta cardinalidade sem objetivo.", "Definir SLO sobre experiência real do usuário.", "Preservar erros e caudas relevantes no sampling."],
+      "labs": ["Instrumentar dois serviços com trace context ponta a ponta.", "Estimar séries antes de publicar uma métrica etiquetada.", "Criar alerta multi-window/multi-burn para um SLO.", "Executar game day e registrar hipóteses, evidências e mitigação."],
+      "references": ["OpenTelemetry Specification", "Observability Engineering", "Site Reliability Engineering", "SRE Workbook", "Prometheus Documentation"]
+    },
+    {
+      "id": "seguranca",
+      "title": "Segurança de Software",
+      "category": "Segurança",
+      "summary": "Threat modeling, identidade, autorização, secrets, supply chain, AppSec e resposta a incidentes.",
+      "source": "security/README.md",
+      "focus": ["Assets, threat actors e trust boundaries", "STRIDE e abuse cases", "Authn, authz, RBAC, ABAC e least privilege", "Secrets, KMS, Vault e rotação", "Workload identity e credenciais curtas", "SBOM, SLSA, provenance e pinning", "Injection, SSRF, XSS, IDOR e deserialização", "Secure defaults e input validation", "Audit logs e detecção", "Incident response, backup e recovery"],
+      "decisions": ["Modelar risco antes de escolher controles.", "Substituir secrets estáticos por identidade quando possível.", "Negar por padrão e testar autorização negativa.", "Tratar dependências e pipelines como parte da superfície de ataque."],
+      "labs": ["Criar DFD e threat model de um serviço.", "Migrar pipeline de chave estática para OIDC/workload identity.", "Gerar SBOM e revisar uma dependência transitiva vulnerável.", "Executar tabletop de comprometimento de token com contenção e recuperação."],
+      "references": ["OWASP ASVS", "OWASP Threat Modeling", "OWASP Top 10", "SLSA", "NIST Incident Response"]
+    },
+    {
+      "id": "ia-fundamentos",
+      "title": "Fundamentos de Inteligência Artificial",
+      "category": "IA",
+      "summary": "Machine Learning, deep learning, transformers, embeddings e modelos generativos pelo mecanismo e pelos limites.",
+      "source": "artificial-intelligence/README.md",
+      "focus": ["Treino, inferência, loss e generalização", "Overfitting, leakage e validação", "Redes neurais, backpropagation e otimização", "Tokenização e representação", "Self-attention, QKV e positional encoding", "Context window e KV cache", "Embeddings, similaridade e ANN", "HNSW e recall", "LLMs, decoding e hallucination", "Grounding e tool use"],
+      "decisions": ["Separar métrica offline de valor real do produto.", "Medir retrieval independentemente da geração.", "Usar modelo maior apenas quando o ganho é demonstrável.", "Manter lógica determinística fora do LLM quando possível."],
+      "labs": ["Treinar modelo simples e observar overfitting e regularização.", "Inspecionar custo de attention com sequência crescente.", "Montar busca vetorial e medir recall@k.", "Comparar geração livre versus grounded em um conjunto factual."],
+      "references": ["Hands-On Machine Learning", "Attention Is All You Need", "Sentence Transformers Documentation", "FAISS Documentation", "PyTorch Tutorials"]
+    },
+    {
+      "id": "ai-engineering",
+      "title": "AI Engineering",
+      "category": "IA",
+      "summary": "Evals, RAG, routing, guardrails, MCP, tools, observabilidade e custo para features de IA em produção.",
+      "source": "ai-engineering/README.md",
+      "focus": ["Golden sets, rubrics e regression evals", "LLM-as-judge e limitações", "RAG: ingestão, chunking, retrieval e reranking", "Hybrid search e grounding", "Model routing, cascades e fallback", "Structured outputs e policy checks", "MCP hosts, clients, servers, tools e resources", "Tool use, schemas e autorização", "Token/cost budget e caching", "Tracing de prompts, retrieval e tools"],
+      "decisions": ["Criar eval antes de trocar prompt/modelo.", "Separar falha de retrieval da falha de generation.", "Usar guardrails determinísticos para políticas críticas.", "Otimizar custo por tarefa válida, não custo por request isolada."],
+      "labs": ["Criar golden set de 30 casos e baseline.", "Comparar dense versus hybrid retrieval por recall.", "Criar router de modelos e medir custo/qualidade/latência.", "Implementar servidor MCP pequeno e trace de tool-call ponta a ponta."],
+      "references": ["MCP Specification", "OWASP LLM Top 10", "OpenTelemetry GenAI Conventions", "Provider Evals/Tool Documentation", "FrugalGPT"]
+    },
+    {
+      "id": "agentes",
+      "title": "Agentes e Sistemas Autônomos",
+      "category": "IA",
+      "summary": "Loops, memória, estado, planejamento, ferramentas, permissões, human-in-the-loop, auditoria e contenção de falhas.",
+      "source": "agents/README.md",
+      "focus": ["Loop percepção → raciocínio → ação → observação", "Termination conditions e budgets", "Working, episodic e semantic memory", "Estado persistente e event log", "Planning, decomposition e replanning", "Tool schemas, idempotência e dry-run", "Risk tiers e human approval", "Least privilege e action scopes", "Circuit breakers e retry budget", "Append-only audit, trace id e policy engine"],
+      "decisions": ["Escalonar autonomia por impacto e reversibilidade.", "Separar decisão proposta de validação/autorização externa.", "Persistir estado suficiente para não repetir erros.", "Interromper loops sem progresso e registrar por quê."],
+      "labs": ["Criar agente com max_steps, cost budget e estado serializado.", "Comparar plano fixo com replanning em tarefa multi-step.", "Redesenhar uma tool ampla em tools estreitas e tipadas.", "Injetar falha repetitiva e provar circuit breaker + escalonamento humano."],
+      "references": ["ReAct Paper", "MCP Tool Specification", "NIST AI RMF", "OWASP Agentic AI Guidance", "Release It!"]
+    },
+    {
+      "id": "ferramentas",
+      "title": "Ferramentas do Desenvolvedor",
+      "category": "Prática",
+      "summary": "Git, Vim e CLI estudados como modelos de operação e diagnóstico, não como listas de comandos.",
+      "source": "developer-tools/git/README.md",
+      "focus": ["Git: commit, tree, blob, refs, HEAD e index", "Merge, rebase, cherry-pick e conflitos", "Reflog, bisect, blame e pickaxe", "Vim: normal mode, operator + motion", "Text objects, registers e macros", "CLI: stdin/stdout, pipes e exit codes", "Quoting e scripts robustos", "jq e automação de JSON", "Debugging reproduzível"],
+      "decisions": ["Entender o objeto alterado antes de usar comando destrutivo.", "Escolher estratégia de histórico pelo contexto de colaboração.", "Automatizar transformação repetitiva sem esconder falhas.", "Fazer scripts falharem de forma explícita e observável."],
+      "labs": ["Inspecionar objetos Git e recuperar commit via reflog.", "Encontrar regressão com git bisect e teste automatizado.", "Refatorar texto em Vim com text objects e macro.", "Escrever pipeline shell com set -euo pipefail e validação de JSON."],
+      "references": ["Pro Git", "Git Documentation", "Practical Vim", "Vim Help", "Bash Manual"]
+    },
+    {
+      "id": "projetos",
+      "title": "Projetos e Prática Deliberada",
+      "category": "Prática",
+      "summary": "Projetos progressivos que exigem código, testes, observabilidade, falhas reproduzidas, ADRs e recuperação.",
+      "source": "projects/README.md",
+      "focus": ["Serviço local com domínio, banco, migrations e testes", "Carga, p99, SLO e overload", "Mensageria, outbox, idempotência e replay", "Extração de boundary e chamadas remotas", "Tracing e fault injection", "Docker, Kubernetes e GitOps", "Threat model e supply chain", "RAG/tools com evals e cost budget", "Runbooks, game days e recovery", "ADRs e documentação de trade-offs"],
+      "decisions": ["Só avançar quando a etapa anterior é operável e verificável.", "Transformar cada conceito em evidência executável.", "Introduzir distribuição e IA apenas quando existe problema claro.", "Registrar falhas, recuperação e trade-offs como parte do portfólio."],
+      "labs": ["Construir API com domínio, persistência, testes e logs estruturados.", "Levar o serviço à saturação e definir política de overload.", "Adicionar broker com outbox e runbook de replay.", "Publicar em Kubernetes via GitOps e executar game day.", "Adicionar feature de IA com golden set, tracing e guardrails."],
+      "references": ["Alexandria Projects", "12 Factor App", "Google SRE", "Building Microservices", "OpenTelemetry Documentation"]
+    }
+  ]
+}

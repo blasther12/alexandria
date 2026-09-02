@@ -4,10 +4,15 @@ from pathlib import Path
 root = Path(__file__).resolve().parents[1]
 data = json.loads((root / 'docs/data.json').read_text(encoding='utf-8'))
 app_js = (root / 'docs/assets/app.js').read_text(encoding='utf-8')
+chapters_js = (root / 'docs/assets/chapters-v2.js').read_text(encoding='utf-8')
+chapters_css = (root / 'docs/assets/chapters.css').read_text(encoding='utf-8')
+index_html = (root / 'docs/index.html').read_text(encoding='utf-8')
 errors = []
 themes = data.get('themes', [])
+
 if len(themes) < 15:
     errors.append(f'esperados pelo menos 15 temas, encontrados {len(themes)}')
+
 ids = set()
 focus_total = 0
 for theme in themes:
@@ -51,13 +56,41 @@ for marker in ('function topicGuide(', 'function topicDetailsHtml(', 'data-topic
     if marker not in app_js:
         errors.append(f'camada de profundidade ausente no app.js: {marker}')
 
+chapter_markers = (
+    'function chapterHtml(',
+    'function renderChapter(',
+    'function decorate(',
+    'Prática progressiva',
+    'Failure modes',
+    'Perguntas de domínio',
+    'chapterDone',
+    '#/chapter/'
+)
+for marker in chapter_markers:
+    if marker not in chapters_js:
+        errors.append(f'capítulo profundo incompleto: {marker}')
+
+if chapters_js.count('match: /') < 15:
+    errors.append('esperados pelo menos 15 aprofundamentos técnicos específicos no motor de capítulos')
+
+for marker in ('.chapter-layout', '.chapter-diagram', '.chapter-code', '.exercise-grid', '.chapter-pager'):
+    if marker not in chapters_css:
+        errors.append(f'estilo de capítulo ausente: {marker}')
+
+if './assets/chapters-v2.js' not in index_html or './assets/chapters.css' not in index_html:
+    errors.append('index.html não carrega o motor/estilo de capítulos')
+
 print(f'Temas: {len(themes)}')
 print(f'Tópicos de aprofundamento: {focus_total}')
 print(f'Laboratórios: {sum(len(t.get("labs", [])) for t in themes)}')
 print(f'Guias expansíveis por tópico: {focus_total}')
+print(f'Capítulos completos disponíveis: {focus_total}')
+print(f'Aprofundamentos técnicos específicos: {chapters_js.count("match: /")}')
+
 if errors:
     print('\nFalhas de profundidade/estrutura:')
     for error in errors:
         print(f'- {error}')
     raise SystemExit(1)
-print('Mapa temático, estrutura e profundidade por tópico válidos.')
+
+print('Mapa temático, guias e capítulos profundos válidos.')

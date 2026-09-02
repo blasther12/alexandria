@@ -53,3 +53,7 @@ Reposicione o consumer group para reler uma pequena janela. Verifique que a dedu
 2. O que muda se o efeito for uma chamada HTTP externa?
 3. Quanto tempo a dedup store precisa reter IDs?
 4. Quando uma idempotency key deveria ser chave de negócio em vez de event ID?
+
+---
+
+[↑ Voltar aos laboratórios](../README.md)

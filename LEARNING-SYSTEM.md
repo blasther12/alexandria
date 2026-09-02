@@ -135,3 +135,7 @@ O deploy valida:
 Consulte o manual global:
 
 <https://github.com/blasther12/blasther12.github.io/blob/main/CONTENT-GUIDE.md>
+
+---
+
+[↑ Voltar ao início do Alexandria](README.md)

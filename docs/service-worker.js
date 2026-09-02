@@ -1,4 +1,4 @@
-const CACHE='alexandria-v3';
+const CACHE='alexandria-v4';
 const SHELL=['./','./index.html','./data.json','./manifest.webmanifest','./assets/styles.css','./assets/app.js','./assets/theme-bootstrap.js','./icons/alexandria-mark.svg','./icons/icon-192.png','./icons/icon-512.png','./icons/apple-touch-icon.png'];
 self.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(SHELL)));self.skipWaiting()});
 self.addEventListener('activate',event=>{event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key!==CACHE).map(key=>caches.delete(key)))));self.clients.claim()});

@@ -36,17 +36,21 @@ jobs:
         run: |
           python scripts/validate_site.py
           python scripts/validate_learning_extras.py
+          python scripts/validate_labs_ui.py
           python -m json.tool docs/data.json > /dev/null
           python -m json.tool docs/learning-map.json > /dev/null
+          python -m json.tool docs/labs.json > /dev/null
           python -m json.tool docs/manifest.webmanifest > /dev/null
           node --check docs/assets/app.js
           node --check docs/assets/chapters-v2.js
           node --check docs/assets/learning-tools.js
           node --check docs/assets/chapter-meta.js
+          node --check docs/assets/labs-tools.js
           node --check docs/assets/theme-bootstrap.js
           test -s docs/assets/chapters.css
           test -s docs/assets/learning-tools.css
           test -s docs/assets/chapter-meta.css
+          test -s docs/assets/labs-tools.css
           test -s docs/icons/alexandria-mark.svg
           test -s labs/README.md
 

@@ -30,6 +30,9 @@
     catch { return {}; }
   };
 
+  const hasDepth = (main, key) => [...main.querySelectorAll('[data-global-deepening]')]
+    .some(node => node.dataset.globalDeepening === key);
+
   const splitTopic = topic => String(topic || '')
     .split(/[:,;/]|\be\b|\bversus\b|\bvs\.?\b|\+/i)
     .map(part => part.trim())
@@ -95,8 +98,9 @@
   }
 
   function investigationSteps(theme, topic, guide, cfg) {
-    const decision = theme.decisions?.[theme.focus.indexOf(topic) % (theme.decisions?.length || 1)] || 'Compare uma alternativa e registre o trade-off.';
-    const lab = guide.lab || theme.labs?.[theme.focus.indexOf(topic) % (theme.labs?.length || 1)] || `Crie um experimento mínimo para “${topic}”.`;
+    const topicIndex = theme.focus.indexOf(topic);
+    const decision = theme.decisions?.[topicIndex % (theme.decisions?.length || 1)] || 'Compare uma alternativa e registre o trade-off.';
+    const lab = guide.lab || theme.labs?.[topicIndex % (theme.labs?.length || 1)] || `Crie um experimento mínimo para “${topic}”.`;
     return [
       ['Hipótese', `Escreva uma frase causal antes de abrir a ferramenta: “Se X estiver limitando ${topic}, então ao alterar Y devo observar Z”.`],
       ['Baseline', 'Registre o comportamento antes da mudança. Sem baseline, qualquer melhora vira impressão e qualquer regressão pode passar despercebida.'],
@@ -181,15 +185,17 @@
 
     const theme = themeById(current.themeId);
     const topic = theme?.focus?.[current.index];
-    const main = app.querySelector('.chapter-layout main');
-    if (!theme || !topic || !main) return;
-    if (main.querySelector(`[data-global-deepening="${CSS.escape(current.key)}"]`)) return;
+    const initialMain = app.querySelector('.chapter-layout main');
+    if (!theme || !topic || !initialMain || hasDepth(initialMain, current.key)) return;
 
     let config;
     try { config = await loadConfig(); }
     catch (error) { console.error('Alexandria: não foi possível carregar profundidade dos capítulos.', error); return; }
 
     if (route()?.key !== current.key) return;
+    const main = app.querySelector('.chapter-layout main');
+    if (!main || hasDepth(main, current.key)) return;
+
     const themeConfig = config?.themes?.[theme.id];
     if (!themeConfig) {
       console.error(`Alexandria: tema sem contrato de profundidade: ${theme.id}`);

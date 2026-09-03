@@ -1,0 +1,133 @@
+{
+  "schemaVersion": 1,
+  "themes": {
+    "fundamentos": {
+      "lens": "hardware, runtime e custo físico",
+      "mechanism": "Siga o caminho do dado e da instrução até CPU, memória, kernel e rede, sempre perguntando onde tempo e espaço são consumidos.",
+      "evidence": "benchmark controlado, profiler, contadores de hardware, strace, métricas de runtime ou inspeção do sistema operacional",
+      "failure": "cache miss, page fault, contenção, syscall excessiva, fila crescente, saturação ou custo de representação escondido",
+      "workedExample": "Uma API pode aumentar p99 sem elevar muito a CPU média. O diagnóstico útil separa CPU time de wall time, observa cache misses, page faults, syscalls e filas e testa uma hipótese por vez. A abstração de código é só a superfície; o gargalo real pode estar na hierarquia de memória, no kernel ou em uma dependência.",
+      "signals": ["CPU cycles / IPC", "cache misses / page faults", "syscalls / context switches", "p50 / p95 / p99"]
+    },
+    "linguagens": {
+      "lens": "semântica, runtime, compilação e modelo de execução",
+      "mechanism": "Separe o que a linguagem promete do que compilador, VM/runtime e sistema operacional realmente executam, incluindo tipos, memória, concorrência e build.",
+      "evidence": "CPU profile, heap profile, GC metrics, event-loop ou scheduler lag, benchmark e comparação de build/deploy",
+      "failure": "alocação excessiva, GC, bloqueio do runtime, concorrência mal modelada, validação ausente ou custo de interoperabilidade",
+      "workedExample": "O mesmo endpoint pode ser I/O-bound ou CPU-bound. Uma abstração assíncrona ajuda quando o trabalho passa tempo esperando I/O, mas não cria paralelismo de CPU por si só. O modelo de execução da linguagem e do runtime determina se a solução melhora throughput ou apenas desloca a fila.",
+      "signals": ["CPU profile", "heap / allocations", "GC pauses", "event-loop ou scheduler lag"]
+    },
+    "engenharia-software": {
+      "lens": "mudança, coesão, acoplamento e proteção de invariantes",
+      "mechanism": "Mapeie quais decisões mudam juntas, quais contratos protegem volatilidade real e onde testes ou boundaries reduzem o raio de impacto de uma mudança.",
+      "evidence": "change coupling no Git, testes de contrato, mapa de dependências, ADRs, mutation testing ou exemplos de mudança",
+      "failure": "abstração prematura, acoplamento implícito, testes frágeis, duplicação de regra, ceremony e ownership difuso",
+      "workedExample": "Se alterar uma regra obriga tocar cinco módulos, o dado mais importante não é a quantidade de interfaces, e sim o padrão de mudança. O boundary certo tende a fazer uma regra mudar dentro de uma região coesa; o errado apenas espalha indireções e mocks.",
+      "signals": ["change coupling", "arquivos por mudança", "falhas por contrato", "owners afetados"]
+    },
+    "arquitetura": {
+      "lens": "atributos de qualidade, boundaries, ownership e evolução",
+      "mechanism": "Comece por cenários mensuráveis de qualidade e conecte estilos arquiteturais às forças que eles resolvem, aos dados que possuem e ao custo operacional criado.",
+      "evidence": "cenários de qualidade, ADR, fitness function, diagrama de ownership, teste de carga/falha e análise de deploy coupling",
+      "failure": "distribuição prematura, boundary sem enforcement, banco compartilhado, deploy acoplado, migração ignorada ou operação sem owner",
+      "workedExample": "Dois serviços que compartilham banco, precisam ser implantados juntos e escalam da mesma forma continuam acoplados apesar da rede entre eles. A independência precisa ser demonstrada por ownership de dados, contrato, deploy e operação, não pelo número de repositórios.",
+      "signals": ["deploy coupling", "latência entre boundaries", "ownership de dados", "SLO por capability"]
+    },
+    "sistemas-distribuidos": {
+      "lens": "tempo, falha parcial, conhecimento incompleto, coordenação e recovery",
+      "mechanism": "Assuma mensagens atrasadas, duplicadas, perdidas ou reordenadas e participantes que observam estados diferentes. Declare invariantes antes de escolher mecanismo de coordenação.",
+      "evidence": "fault injection, simulação, replay, logs correlacionados, teste de idempotência, partição e cenários de recovery",
+      "failure": "retry storm, duplicidade, reorder, split brain, timeout ambíguo, backlog, falta de fencing ou recovery incompleto",
+      "workedExample": "Um pagamento pode retornar timeout depois de o provedor ter concluído a cobrança. Repetir sem idempotência transforma incerteza em duplicidade. O estado correto inclui a possibilidade de resultado desconhecido, uma chave idempotente e um caminho de reconciliação.",
+      "signals": ["timeouts", "retries", "queue depth", "duplicidade / replay"]
+    },
+    "dados": {
+      "lens": "modelo de dados, access pattern, persistência física e concorrência",
+      "mechanism": "Relacione consulta e invariante a layout, índice, transação, isolamento, WAL, replicação e particionamento antes de escolher produto ou otimização.",
+      "evidence": "EXPLAIN ANALYZE, buffers/I/O, sessões concorrentes, locks, replication lag, benchmark e plano de migração",
+      "failure": "hot key, lock contention, write skew, full scan, índice inadequado, lag de réplica, backfill perigoso ou schema incompatível",
+      "workedExample": "Uma query lenta após crescimento de dados pede hipótese e plano de execução, não um índice automático. O índice pode reduzir leitura e aumentar escrita, espaço e manutenção. A decisão correta otimiza o workload e os invariantes do domínio, não uma consulta isolada.",
+      "signals": ["query plan", "buffer/cache hit", "locks / waits", "replication lag"]
+    },
+    "mensageria": {
+      "lens": "entrega, ordering, retenção, replay e recuperação",
+      "mechanism": "Modele fila, log ou stream pela propriedade de retenção, pelo ownership do offset/ack, pela chave de ordenação e pela semântica de redelivery.",
+      "evidence": "consumer crash, teste de duplicidade, replay, lag, DLQ, schema evolution e medição por partição",
+      "failure": "poison message, backlog, hot partition, ordering acidental, dual write, DLQ sem processo ou consumidor não idempotente",
+      "workedExample": "Um consumidor persiste no banco e cai antes do ack. O redelivery é comportamento normal em at-least-once. A robustez vem de idempotência ou deduplicação persistente e de um runbook de replay, não da expectativa de que a duplicata nunca chegue.",
+      "signals": ["consumer lag", "redelivery", "DLQ", "throughput por partição"]
+    },
+    "infra-cloud": {
+      "lens": "isolamento, recursos, scheduling, rede, reconciliação e custo",
+      "mechanism": "Siga processo, container, cgroup, nó, control plane e tráfego para identificar quem realmente impõe cada limite, health check e estado desejado.",
+      "evidence": "kubectl events/describe, métricas de cgroup, rollout controlado, chaos test, network trace e modelo de custo",
+      "failure": "OOMKill, CPU throttling, probe incorreta, drift, scheduling impossível, dependência zonal, egress inesperado ou rollout sem capacidade",
+      "workedExample": "Uma liveness probe que consulta banco remoto pode reiniciar milhares de Pods durante uma indisponibilidade do banco e ampliar o incidente. Readiness, liveness e startup respondem perguntas diferentes e precisam ser desenhadas a partir do comportamento real da aplicação.",
+      "signals": ["requests / limits", "OOM / throttling", "scheduler events", "rollout readiness"]
+    },
+    "api-gateways": {
+      "lens": "edge, identidade, tráfego, policies e governança",
+      "mechanism": "Separe roteamento, TLS, autenticação, autorização, subscription, quota, rate limit e transformação de qualquer regra que pertença ao domínio.",
+      "evidence": "trace ponta a ponta, fluxo de policies, testes 401/403/429, configuração declarativa, contrato de API e métricas edge/upstream",
+      "failure": "policy duplicada, segredo exposto, audience incorreta, rate limit na chave errada, lógica de domínio no gateway ou trace context perdido",
+      "workedExample": "Um 401 pode nascer de credencial ausente, token expirado, issuer/audience inválidos ou subscription exigida pela plataforma. Tratar tudo como 'problema no gateway' mistura camadas diferentes e incentiva correções no lugar errado.",
+      "signals": ["status por policy", "latência edge vs upstream", "quota / rate limit", "trace propagation"]
+    },
+    "observabilidade": {
+      "lens": "evidência operacional, incerteza e confiabilidade",
+      "mechanism": "Parta de perguntas e hipóteses. Escolha logs, métricas, traces e eventos pelo tipo de investigação e controle cardinalidade, sampling, retenção e custo.",
+      "evidence": "query reproduzível, trace, dashboard orientado a decisão, SLO, alerta, game day e postmortem",
+      "failure": "cardinalidade explosiva, sampling cego, alerta ruidoso, contexto não correlacionável ou métrica que não leva a uma ação",
+      "workedExample": "Um gráfico de 5xx subindo é o começo da investigação. A pergunta seguinte precisa decompor por mudança, rota, dependência ou dimensão relevante. Telemetria boa reduz o espaço de hipóteses e permite falsificá-las rapidamente.",
+      "signals": ["SLI / SLO", "cardinalidade", "trace exemplars", "burn rate"]
+    },
+    "seguranca": {
+      "lens": "ativos, atores, confiança, autorização e redução de privilégio",
+      "mechanism": "Identifique o ativo, o ator, a trust boundary, a capacidade obtida e o impacto antes de escolher autenticação, policy, criptografia ou controle de supply chain.",
+      "evidence": "threat model, teste negativo de autorização, secret scan, SBOM, dependency audit, policy test e exercício de abuso",
+      "failure": "privilégio excessivo, authn sem authz, segredo persistente, trust boundary ignorada, dependency compromise ou audit insuficiente",
+      "workedExample": "Um token válido prova identidade ou autorização dentro de uma fronteira específica; ele não concede automaticamente qualquer ação. Testes de segurança úteis verificam também o que o usuário ou workload não pode fazer.",
+      "signals": ["auth failures", "policy denials", "secret exposure", "dependency findings"]
+    },
+    "ia-fundamentos": {
+      "lens": "otimização estatística, representação e limites de generalização",
+      "mechanism": "Separe treino, validação e inferência; identifique representação, função objetivo, arquitetura e procedimento de amostragem antes de interpretar comportamento do modelo.",
+      "evidence": "curvas de treino/validação, dataset versionado, ablation, métricas por slice, benchmark de inferência e inspeção de embeddings/attention quando útil",
+      "failure": "overfitting, leakage, distribuição fora do treino, métrica inadequada, hallucination, custo quadrático ou interpretação antropomórfica",
+      "workedExample": "Uma resposta fluente pode ser estatisticamente plausível e factualmente errada. Antes de atribuir 'conhecimento' ao modelo, pergunte o que o objetivo de treino favorece, quais dados sustentam a resposta e qual mecanismo externo fornece grounding.",
+      "signals": ["train vs validation loss", "métrica por slice", "latência / tokens", "erro factual / calibration"]
+    },
+    "ai-engineering": {
+      "lens": "qualidade de sistema, evals, retrieval, tools, custo e controle",
+      "mechanism": "Separe ingestão/retrieval, contexto, geração, tool use, policy e avaliação para localizar a etapa que realmente causou qualidade, latência ou risco.",
+      "evidence": "golden set, recall@k, groundedness, trace de prompt/retrieval/tools, regressão versionada, custo por tarefa válida e revisão humana amostrada",
+      "failure": "retrieval ruim mascarado por prompt, eval sem baseline, tool ampla, structured output não validado, loop caro ou fallback sem critério",
+      "workedExample": "Se uma resposta RAG está errada, verifique primeiro se a evidência correta apareceu no top-k. Trocar modelo ou prompt quando retrieval falhou mascara a causa e impede medir se a correção realmente melhorou o sistema.",
+      "signals": ["recall@k", "groundedness", "tool error rate", "custo por tarefa válida"]
+    },
+    "agentes": {
+      "lens": "estado, decisão, ação, permissões e contenção",
+      "mechanism": "Modele cada iteração como observação, atualização de estado, decisão, ação e incorporação do resultado, com termination, budget e autorização externos ao modelo.",
+      "evidence": "trace de passos, event log append-only, replay, teste de max_steps, tool audit, dry-run, policy decision e exercício de escalonamento humano",
+      "failure": "loop sem progresso, memória incorreta, retry infinito, tool ampla demais, privilégio excessivo, side effect duplicado ou ausência de termination",
+      "workedExample": "Um agente que recebe o mesmo erro repetidamente não deve continuar tentando indefinidamente. O sistema precisa detectar falta de progresso, consumir um budget explícito, abrir circuit breaker e carregar estado suficiente ao escalar para revisão humana.",
+      "signals": ["steps por tarefa", "tool failures", "budget consumido", "termination / escalations"]
+    },
+    "ferramentas": {
+      "lens": "modelo interno, transformação de estado e recuperação",
+      "mechanism": "Entenda o objeto ou stream alterado por cada comando e diferencie working state, estado persistido, referências e histórico antes de automatizar ou usar operações destrutivas.",
+      "evidence": "inspeção de objetos, history/reflog, exit codes, script reproduzível, diff e configuração efetiva",
+      "failure": "estado implícito, quoting incorreto, pipeline que ignora exit code, ref movida acidentalmente, automação não idempotente ou configuração divergente",
+      "workedExample": "No Git, entender commit, tree, blob, index e refs torna reset, rebase e recovery previsíveis. O comando deixa de ser uma receita e passa a ser uma transformação explícita de objetos e referências.",
+      "signals": ["working tree / index", "history / reflog", "exit codes", "configuração efetiva"]
+    },
+    "projetos": {
+      "lens": "prática deliberada, integração de conceitos e evidência executável",
+      "mechanism": "Comece com um problema e invariantes pequenos, construa uma versão observável e só adicione distribuição, plataforma, segurança ou IA quando uma restrição concreta justificar a complexidade.",
+      "evidence": "código executável, testes, benchmark, traces, ADRs, runbook, game day, threat model, evals e demonstração de recovery",
+      "failure": "complexidade ornamental, projeto sem baseline, happy path sem recovery, observabilidade tardia, arquitetura sem restrição ou tecnologia adicionada por currículo",
+      "workedExample": "Um projeto de portfólio ensina mais quando você consegue mostrar a versão simples, reproduzir o limite que justificou a próxima etapa, implementar a mudança e demonstrar que o novo desenho melhora uma métrica ou invariante sem esconder os novos custos.",
+      "signals": ["baseline vs nova versão", "p99 / erro / saturação", "evidência de recovery", "ADRs / trade-offs"]
+    }
+  }
+}

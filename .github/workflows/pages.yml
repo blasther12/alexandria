@@ -48,6 +48,7 @@ jobs:
           python -m json.tool docs/manifest.webmanifest > /dev/null
           node --check docs/assets/app.js
           node --check docs/assets/chapters-v2.js
+          node --check docs/assets/fundamentals-depth.js
           node --check docs/assets/learning-tools.js
           node --check docs/assets/chapter-meta.js
           node --check docs/assets/labs-tools.js
@@ -59,6 +60,7 @@ jobs:
           node --check docs/assets/theme-bootstrap.js
           node --check docs/assets/ecosystem.js
           test -s docs/assets/chapters.css
+          test -s docs/assets/fundamentals-depth.css
           test -s docs/assets/learning-tools.css
           test -s docs/assets/chapter-meta.css
           test -s docs/assets/labs-tools.css

@@ -94,7 +94,7 @@
       "mechanism": "Separe treino, validação e inferência; identifique representação, função objetivo, arquitetura e procedimento de amostragem antes de interpretar comportamento do modelo.",
       "evidence": "curvas de treino/validação, dataset versionado, ablation, métricas por slice, benchmark de inferência e inspeção de embeddings/attention quando útil",
       "failure": "overfitting, leakage, distribuição fora do treino, métrica inadequada, hallucination, custo quadrático ou interpretação antropomórfica",
-      "workedExample": "Uma resposta fluente pode ser estatisticamente plausível e factualmentre errada. Antes de atribuir 'conhecimento' ao modelo, pergunte o que o objetivo de treino favorece, quais dados sustentam a resposta e qual mecanismo externo fornece grounding.",
+      "workedExample": "Uma resposta fluente pode ser estatisticamente plausível e factualmente errada. Antes de atribuir 'conhecimento' ao modelo, pergunte o que o objetivo de treino favorece, quais dados sustentam a resposta e qual mecanismo externo fornece grounding.",
       "signals": ["train vs validation loss", "métrica por slice", "latência / tokens", "erro factual / calibration"]
     },
     "ai-engineering": {

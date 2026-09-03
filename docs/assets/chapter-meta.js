@@ -27,7 +27,7 @@
     const previous = index > 0 ? theme.focus[index - 1] : null;
     const box = document.createElement('section');
     box.className = 'chapter-meta'; box.dataset.chapterMeta = 'true';
-    box.innerHTML = `<div class="chapter-meta-grid"><div><span class="eyebrow">Tempo estimado</span><strong>${estimated(theme.id, topic)}</strong></div><div><span class="eyebrow">Profundidade</span><strong>${difficulty(theme.id)}</strong></div><div class="chapter-before"><span class="eyebrow">Antes deste capítulo</span>${previous?`<a href="#/chapter/${safe(theme.id)}/${index-1}">${safe(previous)}</a>`:prereqs.length?prereqs.map(item=>`<a href="#/theme/${safe(item.id)}">${safe(item.title)}</a>`).join(''):'<strong>Sem pré-requisito obrigatório</strong>'}</div></div>`;
+    box.innerHTML = `<div class="chapter-meta-grid"><div><span class="eyebrow">Tempo</span><strong>${estimated(theme.id, topic)}</strong></div><div><span class="eyebrow">Nível</span><strong>${difficulty(theme.id)}</strong></div><div class="chapter-before"><span class="eyebrow">Antes</span>${previous?`<a href="#/chapter/${safe(theme.id)}/${index-1}">${safe(previous)}</a>`:prereqs.length?prereqs.map(item=>`<a href="#/theme/${safe(item.id)}">${safe(item.title)}</a>`).join(''):'<strong>Sem pré-requisito</strong>'}</div></div>`;
     app().insertBefore(box, app().children[1] || app().firstChild);
   }
 

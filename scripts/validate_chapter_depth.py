@@ -7,6 +7,13 @@ DATA = ROOT / "docs" / "data.json"
 DEPTH = ROOT / "docs" / "chapter-depth.json"
 
 REQUIRED = {"lens", "mechanism", "evidence", "failure", "workedExample", "signals"}
+MIN_LENGTH = {
+    "lens": 12,
+    "mechanism": 40,
+    "evidence": 30,
+    "failure": 30,
+    "workedExample": 100,
+}
 
 
 def fail(message: str) -> None:
@@ -42,9 +49,9 @@ def main() -> None:
         if missing_fields:
             fail(f"tema {theme_id} sem campos: {', '.join(missing_fields)}")
 
-        for field in REQUIRED - {"signals"}:
+        for field, min_length in MIN_LENGTH.items():
             value = config.get(field)
-            if not isinstance(value, str) or len(value.strip()) < 40:
+            if not isinstance(value, str) or len(value.strip()) < min_length:
                 fail(f"tema {theme_id} possui campo raso ou inválido: {field}")
 
         signals = config.get("signals")

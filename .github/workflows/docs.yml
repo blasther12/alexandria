@@ -66,6 +66,7 @@ jobs:
           scripts/validate_docs.py
           scripts/validate_mermaid.py
           scripts/validate_release.py
+          scripts/validate_chapter_depth.py
 
       - name: Validate release metadata
         run: python3 scripts/validate_release.py
@@ -78,6 +79,9 @@ jobs:
           python3 scripts/audit_curriculum.py
           --check
           --verify-matrix CURRICULUM.md
+
+      - name: Validate chapter depth contract
+        run: python3 scripts/validate_chapter_depth.py
 
       - name: Lint Markdown
         uses: DavidAnson/markdownlint-cli2-action@21c1be1b93ad9ed58fa840aacc3f279cde2a72ff  # v24.2.0

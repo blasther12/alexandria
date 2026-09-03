@@ -1,0 +1,98 @@
+{
+  "fundamentos": {
+    "plain": "Fundamentos explica o que existe por baixo das abstrações do dia a dia. Em vez de começar por framework, você começa por representação de dados, memória, CPU, processos, rede, filas e medição. A meta é conseguir localizar onde o custo e a falha realmente aparecem.",
+    "questions": ["Como um valor vira bits e bytes?", "Que recurso está realmente limitando o sistema?", "Por que latência cresce de forma brusca quando uma fila satura?"],
+    "watch": ["Big O não substitui medição real.", "Mais concorrência pode reduzir throughput.", "CPU, memória, FDs, rede e filas podem saturar independentemente."],
+    "start": ["Bits, inteiros, overflow e ponto flutuante", "CPU, registradores, cache locality e branch prediction", "DNS, TCP/QUIC, TLS e HTTP"]
+  },
+  "linguagens": {
+    "plain": "Aqui linguagens são comparadas pelo que acontece em runtime, não por torcida ou sintaxe. Python, JavaScript, TypeScript, Go e Kotlin possuem modelos diferentes de tipos, memória, concorrência, build e operação. A pergunta útil é qual conjunto de custos combina melhor com o problema.",
+    "questions": ["O que o compilador garante e o que ainda precisa ser validado em runtime?", "Como o runtime organiza concorrência e memória?", "Que custo operacional aparece depois do deploy?"],
+    "watch": ["Concorrência não é o mesmo que paralelismo.", "Benchmark isolado raramente decide linguagem.", "Sistema de tipos não valida automaticamente dados externos."],
+    "start": ["Como comparar linguagens sem torcida", "Runtime, garbage collection e profiling", "Build, deployment, cold start e consumo de memória"]
+  },
+  "engenharia-software": {
+    "plain": "Engenharia de Software trata principalmente do custo de mudança. Coesão, acoplamento, testes, DDD, refactoring e especificações servem para reduzir o risco de alterar um sistema sem entender suas consequências.",
+    "questions": ["Que parte do sistema muda junto com esta regra?", "Qual risco este teste realmente cobre?", "Que abstração protege uma volatilidade real e qual só adiciona cerimônia?"],
+    "watch": ["Pattern sem força concreta vira decoração.", "Mais testes não significam necessariamente mais confiança.", "DDD não exige transformar todo domínio em arquitetura complexa."],
+    "start": ["Coesão, acoplamento e information hiding", "Domain-Driven Design estratégico e tático", "Testing: unidade, integração, contratos, E2E e property-based"]
+  },
+  "arquitetura": {
+    "plain": "Arquitetura é o conjunto de decisões difíceis de mudar que ajudam o sistema a atender restrições importantes. Antes de escolher microsserviços, eventos ou uma arquitetura em camadas, você precisa declarar quais atributos de qualidade importam e como serão medidos.",
+    "questions": ["Qual cenário de qualidade justifica esta decisão?", "Que boundary é realmente independente?", "Como saberemos que a arquitetura continua saudável depois de várias mudanças?"],
+    "watch": ["Arquitetura não é coleção de diagramas.", "Distribuir fisicamente antes de desacoplar logicamente aumenta risco.", "Toda decisão arquitetural cria custos operacionais e de migração."],
+    "start": ["Drivers e cenários de atributos de qualidade", "Monólito modular e enforcement de boundaries", "Microsserviços e independent deployability"]
+  },
+  "sistemas-distribuidos": {
+    "plain": "Sistemas distribuídos começam quando partes diferentes precisam cooperar sem compartilhar memória, relógio perfeito ou conhecimento instantâneo. A grande dificuldade é decidir corretamente mesmo com mensagens atrasadas, duplicadas, perdidas e participantes que falham parcialmente.",
+    "questions": ["O que cada participante sabe neste momento?", "Qual invariante precisa sobreviver a falhas e concorrência?", "Como o sistema se recupera quando não sabemos se uma ação aconteceu?"],
+    "watch": ["Chamada remota não é função local lenta.", "Timeout não diz se o efeito aconteceu.", "Retry sem idempotência e orçamento pode piorar a falha."],
+    "start": ["Falhas parciais e conhecimento incompleto", "Linearizabilidade, serializabilidade e consistência eventual", "Timeout, deadline, retry budget, jitter e circuit breaker"]
+  },
+  "dados": {
+    "plain": "Bancos de dados são mecanismos de armazenamento com garantias e custos diferentes. A escolha começa pelos padrões de acesso e pelas regras do domínio, depois passa por índices, transações, isolamento, replicação, particionamento e migração.",
+    "questions": ["Que consultas dominam o workload?", "Que anomalia concorrente o domínio não tolera?", "Como alterar schema e dados sem interromper produção?"],
+    "watch": ["Banco popular não é automaticamente adequado ao problema.", "Índice acelera leitura cobrando escrita, espaço e manutenção.", "ACID não elimina todas as anomalias de concorrência."],
+    "start": ["Access patterns e invariantes", "B-tree, LSM-tree e índices compostos", "ACID, MVCC e níveis de isolamento"]
+  },
+  "mensageria": {
+    "plain": "Mensageria e streaming estudam como trabalho e eventos atravessam sistemas de forma assíncrona. Kafka, SQS e outras tecnologias diferem em retenção, ordering, replay e consumo, mas todas exigem pensar em duplicação, atraso e recuperação.",
+    "questions": ["Você precisa de fila, log ou stream retido?", "Onde exatamente a garantia de entrega termina?", "Como repetir processamento sem repetir efeitos indevidos?"],
+    "watch": ["At-least-once significa que duplicatas podem acontecer.", "Exactly-once sempre tem uma fronteira concreta.", "DLQ sem processo de recuperação vira cemitério."],
+    "start": ["Fila versus log versus stream", "At-most-once e at-least-once", "Idempotency keys e deduplicação persistente"]
+  },
+  "infra-cloud": {
+    "plain": "Containers, Kubernetes e cloud organizam processos, recursos, rede e reconciliação em escala. O objetivo é entender os mecanismos por trás de imagens, cgroups, control loops, probes, regiões e serviços gerenciados antes de decorar YAML ou produtos.",
+    "questions": ["Que recurso e failure domain estamos isolando?", "Como o control plane detecta e corrige desvio do estado desejado?", "Quando um serviço gerenciado compensa custo e lock-in?"],
+    "watch": ["Container não é uma VM pequena.", "Kubernetes não corrige aplicação sem readiness, limites e shutdown corretos.", "Custo precisa ser tratado como atributo arquitetural."],
+    "start": ["OCI images, layers, namespaces e cgroups", "Kubernetes control loops, scheduler e controllers", "Readiness, liveness, requests/limits e rollout"]
+  },
+  "api-gateways": {
+    "plain": "API Gateway fica na borda entre consumidores e serviços. Ele pode concentrar roteamento, autenticação, quotas e políticas transversais, mas se começar a conhecer regras profundas do negócio se transforma em um novo ponto de acoplamento.",
+    "questions": ["Esta regra pertence à borda ou ao domínio?", "Quem está autenticado e a que está autorizado?", "Qual entidade deve ser protegida por quota ou rate limit?"],
+    "watch": ["401, 403 e 429 representam problemas diferentes.", "Transformação no gateway pode esconder contrato ruim.", "Tracing precisa sobreviver à passagem pelo edge."],
+    "start": ["Routing, TLS termination e policies transversais", "OAuth2, OIDC, JWT, API keys e mTLS", "Rate limiting: token bucket, burst e quotas"]
+  },
+  "observabilidade": {
+    "plain": "Observabilidade serve para reduzir incerteza sobre um sistema em execução. Logs, métricas e traces só têm valor quando ajudam a responder perguntas sobre comportamento, impacto no usuário, saturação e causa provável de falhas.",
+    "questions": ["Que pergunta operacional este sinal responde?", "Qual SLI representa experiência real do usuário?", "Como correlacionar uma mudança de código com aumento de erro ou latência?"],
+    "watch": ["Dashboard não é observabilidade por si só.", "Cardinalidade alta pode tornar telemetria cara ou inutilizável.", "Alertar sobre sintoma interno sem impacto ao usuário gera ruído."],
+    "start": ["Logs, métricas, traces e events por pergunta", "OpenTelemetry SDK, Collector, OTLP e propagation", "SLI, SLO, error budget e burn rate"]
+  },
+  "seguranca": {
+    "plain": "Segurança começa identificando o que precisa ser protegido, de quem, em quais fronteiras e com qual impacto. Autenticação, autorização, criptografia, supply chain e threat modeling são respostas a riscos específicos, não uma lista de produtos obrigatórios.",
+    "questions": ["Qual asset estamos protegendo?", "Onde muda o nível de confiança?", "Que ação um atacante consegue executar se este controle falhar?"],
+    "watch": ["Autenticação não substitui autorização.", "Segredo armazenado não é segredo protegido se permissões forem amplas.", "Controle sem cenário de ameaça pode proteger a coisa errada."],
+    "start": ["Threat modeling e trust boundaries", "Autenticação, autorização e least privilege", "Supply chain, dependências e SBOM"]
+  },
+  "ia-fundamentos": {
+    "plain": "Fundamentos de IA explica o que modelos aprendem, como representam padrões e por que inferência é probabilística. A meta é separar capacidade real, limitação estatística e linguagem antropomórfica que faz o sistema parecer mais consciente ou confiável do que é.",
+    "questions": ["O que o treinamento está otimizando?", "Como medir generalização em dados que o modelo não viu?", "Por que uma resposta fluente ainda pode estar errada?"],
+    "watch": ["Modelo não consulta automaticamente fatos externos.", "Métrica média pode esconder grupos onde o sistema falha.", "Overfitting e leakage podem produzir avaliações enganosas."],
+    "start": ["Treino, validação, teste e generalização", "Embeddings e representação", "Inferência, sampling e limites probabilísticos"]
+  },
+  "ai-engineering": {
+    "plain": "AI Engineering trata modelos como parte de um sistema de produção. Dados, retrieval, prompts, tools, evals, tracing, custo, fallback e políticas precisam funcionar juntos para que uma aplicação de IA seja confiável.",
+    "questions": ["A falha veio de retrieval ou geração?", "Como detectar regressão antes de trocar modelo em produção?", "Quanto custa uma tarefa válida, e não apenas uma chamada ao modelo?"],
+    "watch": ["Prompt tuning sem baseline vira tentativa e erro.", "RAG ruim não é corrigido apenas com modelo maior.", "LLM-as-judge precisa de calibração e amostras humanas."],
+    "start": ["RAG: ingestão, chunking, retrieval, reranking e grounding", "Evals: golden sets, rubrics e regression evals", "Tracing, custo, cache e fallback"]
+  },
+  "agentes": {
+    "plain": "Agentes combinam modelo, estado, ferramentas e um loop de decisão. O desafio não é apenas fazê-los agir, mas garantir que saibam quando parar, respeitem permissões, não repitam erros indefinidamente e deixem evidência suficiente para auditoria.",
+    "questions": ["Qual estado o agente mantém entre passos?", "Que condição encerra o loop?", "Que ação exige validação externa ou aprovação humana?"],
+    "watch": ["Loop sem budget pode repetir erro para sempre.", "Tool ampla demais transforma erro de raciocínio em efeito real.", "Memória precisa ajudar a evitar repetição sem virar fonte de verdade não verificada."],
+    "start": ["Loop percepção, raciocínio, ação e estado", "Termination conditions, budgets e progress detection", "Tools, autorização e human-in-the-loop"]
+  },
+  "ferramentas": {
+    "plain": "Ferramentas ficam mais fáceis quando você entende o modelo por trás delas. Git é um grafo de objetos e referências, shell combina processos e streams, e Vim funciona como linguagem de edição. A meta é reduzir memorização de comando e aumentar previsibilidade.",
+    "questions": ["Que estado este comando altera?", "Como recuperar se a operação foi errada?", "Que objeto ou fluxo existe por trás da interface?"],
+    "watch": ["Comando decorado sem modelo mental quebra em caso não previsto.", "Shell exige atenção a quoting e códigos de saída.", "Git raramente destrói dados imediatamente, mas comandos destrutivos mudam referências e working tree."],
+    "start": ["Git: commit, tree, blob, refs, HEAD e index", "Shell: pipes, redirection, quoting e exit codes", "Vim: modos, motions, operators e text objects"]
+  },
+  "projetos": {
+    "plain": "Projetos são onde os conceitos deixam de ser peças separadas. Cada projeto deve começar com um problema pequeno e observável, adicionar complexidade apenas quando existe motivo e produzir código, testes, telemetria e documentação suficientes para explicar decisões.",
+    "questions": ["Que restrição real este componente resolve?", "Como provar que a solução funciona sob falha ou carga?", "Que parte você removeria se precisasse reduzir complexidade pela metade?"],
+    "watch": ["Não adicionar Kubernetes, mensageria ou IA por decoração.", "Projeto sem observabilidade ensina menos sobre comportamento real.", "Falha reproduzida e recuperada vale tanto quanto happy path funcionando."],
+    "start": ["Definir problema, usuários e invariantes", "Construir versão mínima observável", "Adicionar falhas, carga e decisões arquiteturais de forma incremental"]
+  }
+}

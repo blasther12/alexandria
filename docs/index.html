@@ -32,6 +32,7 @@
   <link rel="stylesheet" href="./assets/theme-guide.css">
   <link rel="stylesheet" href="./assets/compact-theme-list.css">
   <link rel="stylesheet" href="./assets/ecosystem.css">
+  <link rel="stylesheet" href="./assets/navigation-polish.css">
   <script src="./assets/theme-bootstrap.js"></script>
 </head>
 <body>
@@ -42,24 +43,28 @@
         <img src="./icons/alexandria-mark.svg" width="48" height="48" alt="">
         <span><strong>Alexandria</strong><small>Engenharia · Sistemas · Cloud · IA</small></span>
       </a>
-      <button id="menuButton" class="menu" aria-label="Abrir navegação">☰</button>
-      <nav id="topNav" class="nav">
-        <a href="#/">Início</a>
-        <a href="#/themes">Temas</a>
-        <a href="#/projects">Projetos</a>
-        <a href="#/method">Método</a>
-        <a class="portal-home" href="https://blasther12.github.io/">⌂ Portal</a>
-        <details class="space-switcher">
-          <summary>Espaços</summary>
-          <div class="space-switcher-menu">
-            <a href="https://blasther12.github.io/blog/"><strong>Blog</strong><span>Textos e projetos sobre engenharia e trabalho.</span></a>
-            <a href="https://blasther12.github.io/cliofera/"><strong>Cliofera</strong><span>Formação autodirigida em História.</span></a>
-            <a href="https://blasther12.github.io/alexandria/"><strong>Alexandria</strong><span>Você está aqui.</span></a>
-          </div>
-        </details>
-        <a href="https://github.com/blasther12/alexandria" target="_blank" rel="noopener noreferrer">Repositório ↗</a>
-        <button id="themeToggle" type="button">☾ Escuro</button>
-        <button id="installApp" type="button" hidden>Instalar</button>
+      <button id="menuButton" class="menu" aria-label="Abrir navegação" aria-expanded="false">Menu</button>
+      <nav id="topNav" class="nav" aria-label="Navegação principal">
+        <div class="nav-group nav-primary">
+          <a href="#/">Início</a>
+          <a href="#/themes">Temas</a>
+          <a href="#/projects">Projetos</a>
+          <a href="#/method">Método</a>
+        </div>
+        <div class="nav-group nav-secondary">
+          <a class="portal-home" href="https://blasther12.github.io/">Portal</a>
+          <details class="space-switcher">
+            <summary>Ecossistema</summary>
+            <div class="space-switcher-menu">
+              <a href="https://blasther12.github.io/blog/"><strong>Blog</strong><span>Textos e projetos sobre engenharia e trabalho.</span></a>
+              <a href="https://blasther12.github.io/cliofera/"><strong>Cliofera</strong><span>Formação autodirigida em História.</span></a>
+              <a href="https://blasther12.github.io/alexandria/" aria-current="page"><strong>Alexandria</strong><span>Você está aqui.</span></a>
+            </div>
+          </details>
+          <a href="https://github.com/blasther12/alexandria" target="_blank" rel="noopener noreferrer">Repositório</a>
+          <button id="themeToggle" type="button">Usar tema escuro</button>
+          <button id="installApp" type="button" hidden>Instalar</button>
+        </div>
       </nav>
     </header>
     <main id="app" class="app" aria-live="polite"></main>
@@ -84,5 +89,6 @@
   <script src="./assets/reading-header.js" defer></script>
   <script src="./assets/compact-theme-list.js" defer></script>
   <script src="./assets/ecosystem.js" defer></script>
+  <script src="./assets/navigation-polish.js" defer></script>
 </body>
 </html>

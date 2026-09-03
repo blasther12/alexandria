@@ -62,6 +62,7 @@ jobs:
           node --check docs/assets/compact-theme-list.js
           node --check docs/assets/theme-bootstrap.js
           node --check docs/assets/ecosystem.js
+          node --check docs/assets/navigation-polish.js
           test -s docs/assets/chapters.css
           test -s docs/assets/fundamentals-depth.css
           test -s docs/assets/deep-chapters.css
@@ -73,6 +74,7 @@ jobs:
           test -s docs/assets/theme-guide.css
           test -s docs/assets/compact-theme-list.css
           test -s docs/assets/ecosystem.css
+          test -s docs/assets/navigation-polish.css
           test -s docs/icons/alexandria-mark.svg
           test -s docs/404.html
           test -s docs/robots.txt
